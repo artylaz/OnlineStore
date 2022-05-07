@@ -1,0 +1,179 @@
+--Создал базу данных
+CREATE DATABASE OnlineStoreDb
+
+DROP DATABASE OnlineStoreDb
+
+DROP TABLE Roles
+DROP TABLE Сities
+DROP TABLE Users
+DROP TABLE Categories
+DROP TABLE Brands
+DROP TABLE Categories_Brands
+DROP TABLE Products
+DROP TABLE Product_Info
+DROP TABLE Baskets
+DROP TABLE Basket_Products
+
+--Создаём таблицу ролей
+CREATE TABLE Roles(
+    Id INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(20) NOT NULL
+)
+
+--Создаём таблицу разрешения
+CREATE TABLE Permissions(
+    Id INT IDENTITY PRIMARY KEY,
+    Title NVARCHAR(20) NOT NULL,
+    Description NVARCHAR(100) NULL
+)
+
+--Создаём таблицу разрешения
+CREATE TABLE Roles_Permissions(
+    RoleId INT NOT NULL,
+    PermissionId INT NOT NULL,
+
+    PRIMARY KEY (RoleId,PermissionId),
+
+    FOREIGN KEY (RoleId)  REFERENCES Roles (Id),
+    FOREIGN KEY (PermissionId)  REFERENCES Permissions (Id),
+)
+
+--Создаём таблицу городов
+--CREATE TABLE Сities(
+--    Id INT IDENTITY,
+--    Name NVARCHAR(20) NOT NULL,
+--
+--    CONSTRAINT PK_City_Id PRIMARY KEY (Id),
+--)
+
+--Создаём таблицу клиентов
+CREATE TABLE Users(
+    Id INT IDENTITY PRIMARY KEY,
+    FirstName NVARCHAR(20) NOT NULL,
+    LastName NVARCHAR(20) NOT NULL,
+    Email NVARCHAR(30) NOT NULL UNIQUE,
+    Password NVARCHAR(30) NOT NULL ,
+    Phone VARCHAR(20) NOT NULL UNIQUE,
+    RegistrationDate DATE NOT NULL,
+
+    RoleId INT,
+
+    FOREIGN KEY (RoleId) REFERENCES Roles (Id) ON DELETE SET NULL
+
+)
+
+--Создаём таблицу Категорий
+CREATE TABLE Categories(
+    Id INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(40) NOT NULL,
+
+    CategoryId INT,
+
+    FOREIGN KEY (CategoryId) REFERENCES Categories (Id)
+)
+
+--Создаём таблицу Брендов
+CREATE TABLE Brands(
+    Id INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(40) NOT NULL
+)
+
+--Создаём таблицу КатегорийБрендов
+--CREATE TABLE Categories_Brands(
+ --   Id INT IDENTITY,
+--    CategoryId INT,
+--    BrandId INT,
+
+--    CONSTRAINT PK_Categories_Brand_Id PRIMARY KEY (Id),
+
+ --   CONSTRAINT FK_Categories_Brands_To_Categories FOREIGN KEY (CategoryId) REFERENCES Categories (Id),
+ --   CONSTRAINT FK_Categories_Brands_To_Brands FOREIGN KEY (BrandId) REFERENCES Brands (Id),
+--)
+
+--Создаём таблицу Товаров
+CREATE TABLE Products(
+    Id INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(40) NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    Rating BIT NULL,
+
+    CategoryId INT,
+    BrandId INT,
+
+    FOREIGN KEY (CategoryId) REFERENCES Categories (Id),
+    FOREIGN KEY (BrandId) REFERENCES Brands (Id),
+)
+
+--Создаём таблицу Характеристик устройства
+CREATE TABLE Product_Info(
+    Id INT IDENTITY PRIMARY KEY,
+    Title NVARCHAR(40) NOT NULL,
+    Description NVARCHAR(200),
+
+    ProductId INT NULL,
+
+    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE SET NULL,
+)
+
+--Создаём таблицу Картинок
+CREATE TABLE Pictures(
+    Id INT IDENTITY PRIMARY KEY,
+    Cover NVARCHAR(max),
+    CoverFormat NVARCHAR(10),
+    Number INT,
+
+    ProductId INT,
+
+    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE SET NULL,
+)
+
+--Создаём таблицу Корзин
+CREATE TABLE Baskets(
+    UserId INT,
+    ProductId INT,
+    AmountProduct INT,
+    
+    PRIMARY KEY (UserId,ProductId),
+
+    FOREIGN KEY (UserId) REFERENCES Users (Id) ON DELETE CASCADE,
+    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE CASCADE,
+)
+
+--Создаём таблицу КарзинаТовары
+--CREATE TABLE Baskets_Products(
+--   Id INT IDENTITY,
+--   BasketId INT,
+--   ProductId INT,
+
+--   CONSTRAINT PK_Basket_Product_Id PRIMARY KEY (Id),
+
+--   CONSTRAINT FK_Baskets_Products_To_Basket FOREIGN KEY (BasketId)  REFERENCES Baskets (Id),
+--   CONSTRAINT FK_Baskets_Products_To_Products FOREIGN KEY (ProductId)  REFERENCES Products (Id),
+--)
+
+--Создаём таблицу Магазины
+CREATE TABLE Store(
+    Id INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(20) NULL,
+    ProductId INT NULL,
+    AmountProduct INT CHECK(AmountProduct >= 0),
+
+    FOREIGN KEY (ProductId)  REFERENCES Products (Id) ON DELETE SET NULL,
+)
+
+--Создаём таблицу Адресов
+CREATE TABLE Addresses(
+    Id INT IDENTITY PRIMARY KEY,
+    Region NVARCHAR(20) NOT NULL,
+    City NVARCHAR(20) NOT NULL,
+    Street NVARCHAR(20) NOT NULL,
+    House NVARCHAR(10) NOT NULL,
+    Housing NVARCHAR(10) NOT NULL,
+
+    StoreId INT NULL,
+
+    FOREIGN KEY (StoreId) REFERENCES Store (Id) ON DELETE CASCADE
+)
+
+DROP TABLE Store
+DROP TABLE Pictures
