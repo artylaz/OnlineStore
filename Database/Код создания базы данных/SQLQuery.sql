@@ -116,16 +116,16 @@ CREATE TABLE Product_Info(
 )
 
 --Создаём таблицу Картинок
-CREATE TABLE Pictures(
-    Id INT IDENTITY PRIMARY KEY,
-    Cover NVARCHAR(max),
-    CoverFormat NVARCHAR(10),
-    Number INT,
-
-    ProductId INT,
-
-    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE SET NULL,
-)
+--CREATE TABLE Pictures(
+--    Id INT IDENTITY PRIMARY KEY,
+--   Cover NVARCHAR(max),
+--    CoverFormat NVARCHAR(10),
+--    Number INT,
+--
+--    ProductId INT,
+--
+--    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE SET NULL,
+--)
 
 --Создаём таблицу Корзин
 CREATE TABLE Baskets(
@@ -152,13 +152,21 @@ CREATE TABLE Baskets(
 --)
 
 --Создаём таблицу Магазины
-CREATE TABLE Store(
+CREATE TABLE Stores(
     Id INT IDENTITY PRIMARY KEY,
     Name NVARCHAR(20) NULL,
-    ProductId INT NULL,
+)
+
+--Создаём таблицу МагазиныПродукты
+CREATE TABLE Stores_Products(
+    StoreId INT NOT NULL,
+    ProductId INT NOT NULL,
     AmountProduct INT CHECK(AmountProduct >= 0),
 
-    FOREIGN KEY (ProductId)  REFERENCES Products (Id) ON DELETE SET NULL,
+    PRIMARY KEY (StoreId,ProductId),
+
+    FOREIGN KEY (StoreId)  REFERENCES Stores (Id),
+    FOREIGN KEY (ProductId)  REFERENCES Products (Id),
 )
 
 --Создаём таблицу Адресов
@@ -172,8 +180,10 @@ CREATE TABLE Addresses(
 
     StoreId INT NULL,
 
-    FOREIGN KEY (StoreId) REFERENCES Store (Id) ON DELETE CASCADE
+    FOREIGN KEY (StoreId) REFERENCES Stores (Id) ON DELETE CASCADE
 )
 
-DROP TABLE Store
+
+
 DROP TABLE Pictures
+DROP TABLE Stores_Products
