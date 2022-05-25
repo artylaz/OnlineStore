@@ -116,16 +116,15 @@ CREATE TABLE Product_Info(
 )
 
 --Создаём таблицу Картинок
---CREATE TABLE Pictures(
---    Id INT IDENTITY PRIMARY KEY,
---   Cover NVARCHAR(max),
---    CoverFormat NVARCHAR(10),
---    Number INT,
---
---    ProductId INT,
---
---    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE SET NULL,
---)
+CREATE TABLE Pictures(
+    Id INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(30),
+    Path NVARCHAR(max),
+
+    ProductId INT,
+
+    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE SET NULL,
+)
 
 --Создаём таблицу Корзин
 CREATE TABLE Baskets(
