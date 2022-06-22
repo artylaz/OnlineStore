@@ -182,6 +182,16 @@ CREATE TABLE Addresses(
     FOREIGN KEY (StoreId) REFERENCES Stores (Id) ON DELETE CASCADE
 )
 
+CREATE TABLE PurchaseHistory(
+    Id INT IDENTITY PRIMARY KEY,
+    UserId INT NOT NULL,
+    ProductId INT NOT NULL,
+    AmountProduct INT NOT NULL,
+    DatePurchase DATETIME NOT NULL,
+
+    FOREIGN KEY (UserId) REFERENCES Users (Id) ON DELETE CASCADE,
+    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE CASCADE,
+)
 
 
 DROP TABLE Pictures
