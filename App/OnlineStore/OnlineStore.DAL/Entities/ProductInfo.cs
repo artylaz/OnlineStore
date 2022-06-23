@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-#nullable disable
-
-namespace OnlineStore.DAL.Entities
+﻿namespace OnlineStore.DAL.Entities
 {
     public partial class ProductInfo
     {
