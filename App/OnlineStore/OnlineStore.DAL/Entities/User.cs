@@ -11,6 +11,7 @@ namespace OnlineStore.DAL.Entities
         {
             Baskets = new HashSet<Basket>();
             PurchaseHistories = new HashSet<PurchaseHistory>();
+            StoresUsers = new HashSet<StoresUser>();
         }
 
         public int Id { get; set; }
@@ -25,5 +26,6 @@ namespace OnlineStore.DAL.Entities
         public virtual Role Role { get; set; }
         public virtual ICollection<Basket> Baskets { get; set; }
         public virtual ICollection<PurchaseHistory> PurchaseHistories { get; set; }
+        public virtual ICollection<StoresUser> StoresUsers { get; set; }
     }
 }

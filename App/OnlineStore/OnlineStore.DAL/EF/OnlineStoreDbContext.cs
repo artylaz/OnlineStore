@@ -28,6 +28,7 @@ namespace OnlineStore.DAL.EF
         public virtual DbSet<RolesPermission> RolesPermissions { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<StoresProduct> StoresProducts { get; set; }
+        public virtual DbSet<StoresUser> StoresUsers { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -250,6 +251,26 @@ namespace OnlineStore.DAL.EF
                     .HasForeignKey(d => d.StoreId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Stores_Pr__Store__5DCAEF64");
+            });
+
+            modelBuilder.Entity<StoresUser>(entity =>
+            {
+                entity.HasKey(e => new { e.StoreId, e.UserId })
+                    .HasName("PK__Stores_U__EAFA7DC540EC729A");
+
+                entity.ToTable("Stores_Users");
+
+                entity.HasOne(d => d.Store)
+                    .WithMany(p => p.StoresUsers)
+                    .HasForeignKey(d => d.StoreId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Stores_Us__Store__0D7A0286");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.StoresUsers)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Stores_Us__UserI__0E6E26BF");
             });
 
             modelBuilder.Entity<User>(entity =>

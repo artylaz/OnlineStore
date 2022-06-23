@@ -11,6 +11,7 @@ namespace OnlineStore.DAL.Entities
         {
             Addresses = new HashSet<Address>();
             StoresProducts = new HashSet<StoresProduct>();
+            StoresUsers = new HashSet<StoresUser>();
         }
 
         public int Id { get; set; }
@@ -18,5 +19,6 @@ namespace OnlineStore.DAL.Entities
 
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<StoresProduct> StoresProducts { get; set; }
+        public virtual ICollection<StoresUser> StoresUsers { get; set; }
     }
 }
