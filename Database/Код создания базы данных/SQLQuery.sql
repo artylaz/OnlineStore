@@ -193,6 +193,16 @@ CREATE TABLE PurchaseHistory(
     FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE CASCADE,
 )
 
+CREATE TABLE Stores_Users(
+    StoreId INT NOT NULL,
+    UserId INT NOT NULL,
+
+    PRIMARY KEY (StoreId,UserId),
+
+    FOREIGN KEY (StoreId)  REFERENCES Stores (Id),
+    FOREIGN KEY (UserId)  REFERENCES Users (Id),
+)
+
 
 DROP TABLE Pictures
 DROP TABLE Stores_Products

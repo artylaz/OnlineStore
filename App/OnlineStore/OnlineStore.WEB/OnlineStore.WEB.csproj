@@ -12,11 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\OnlineStore.BLL\OnlineStore.BLL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OnlineStore.DAL\OnlineStore.DAL.csproj" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
