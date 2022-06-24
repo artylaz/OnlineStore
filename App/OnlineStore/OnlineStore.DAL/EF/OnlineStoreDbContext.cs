@@ -30,7 +30,10 @@ namespace OnlineStore.DAL.EF
         public virtual DbSet<StoresProduct> StoresProducts { get; set; }
         public virtual DbSet<StoresUser> StoresUsers { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");

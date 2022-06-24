@@ -1,10 +1,17 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OnlineStore.BLL.Infrastructure;
+using OnlineStore.BLL.Interfaces;
+using OnlineStore.BLL.Services;
 using OnlineStore.DAL.EF;
+using OnlineStore.DAL.Interfaces;
+using OnlineStore.DAL.Repositories;
+using OnlineStore.WEB.Infrastructure;
 
 namespace OnlineStore.WEB
 {
@@ -20,6 +27,18 @@ namespace OnlineStore.WEB
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<OnlineStoreDbContext>(options => options.UseSqlServer(connection));
+
+            services.AddScoped<IUnitOfWork, EFUnitOfWork>();
+            services.AddScoped<ICategoryService, CategoryService>();
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+                mc.AddProfile(new MappingProfileVM());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddControllersWithViews();
         }

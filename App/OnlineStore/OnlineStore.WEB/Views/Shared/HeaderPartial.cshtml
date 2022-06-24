@@ -1,4 +1,7 @@
-﻿<div class="mobile-header-section d-block d-lg-none">
+﻿@using OnlineStore.WEB.Models
+@model IEnumerable<CategoryVM>
+
+<div class="mobile-header-section d-block d-lg-none">
 
     <div class="mobile-header-wrapper">
         <div class="container">
@@ -25,19 +28,19 @@
 
 
 <header class="header-section d-lg-block d-none">
-    
+
     <div class="header-center">
         <div class="container">
             <div class="row d-flex justify-content-between align-items-center">
                 <div class="col-3">
-                    
+
                     <div class="header-logo">
                         <a href="index.html"><img src="images/logo/logo.png" alt=""></a>
                     </div>
                 </div>
 
                 <div class="col-3 text-right">
-                    
+
                     <ul class="header-action-icon">
                         <li>
                             <a href="#offcanvas-add-cart" class="offcanvas-toggle">
@@ -50,17 +53,17 @@
                                 <i class="icon-user"></i>
                             </a>
                         </li>
-                    </ul> 
+                    </ul>
                 </div>
             </div>
         </div>
-    </div> 
-    
+    </div>
+
     <div class="header-bottom sticky-header">
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    
+
                     <div class="main-menu">
                         <nav>
                             <ul>
@@ -71,43 +74,24 @@
                                     <a href="product-details-default.html">
                                         Купить <i class="fa fa-angle-down"></i>
                                     </a>
-                                   
+
                                     <div class="mega-menu">
                                         <ul class="mega-menu-inner">
-                                            
-                                            <li class="mega-menu-item">
-                                                <a href="#" class="mega-menu-item-title">Категория</a>
-                                                <ul class="mega-menu-sub">
-                                                    <li>
-                                                        <a href="#">Категория 1</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            
-                                            <li class="mega-menu-item">
-                                                <a href="#" class="mega-menu-item-title">Категория</a>
-                                                <ul class="mega-menu-sub">
-                                                    <li><a href="#">Категория 1</a></li>
-                                                </ul>
-                                            </li>
-                                            
-                                            <li class="mega-menu-item">
-                                                <a href="#" class="mega-menu-item-title">Категория</a>
-                                                <ul class="mega-menu-sub">
-                                                    <li>
-                                                        <a href="#">Категория 1</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                           
-                                            <li class="mega-menu-item">
-                                                <a href="#" class="mega-menu-item-title">Категория 1</a>
-                                                <ul class="mega-menu-sub">
-                                                    <li>
-                                                        <a href="#">Категория 1</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
+
+                                            @foreach (var categoryVM in IndexMenuVM.categoryVMs)
+                                            {
+                                                <li class="mega-menu-item">
+                                                    <a href="#" class="mega-menu-item-title">@categoryVM.Name</a>
+                                                    <ul class="mega-menu-sub">
+                                                        @foreach (var item in categoryVM.InverseCategoryNavigation)
+                                                        {
+                                                            <li>
+                                                                <a href="#">@item.Name</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
                                         </ul>
                                         <div class="menu-banner">
                                             <a href="" class="menu-banner-link">
@@ -122,9 +106,9 @@
                                 </li>
                             </ul>
                         </nav>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </header>

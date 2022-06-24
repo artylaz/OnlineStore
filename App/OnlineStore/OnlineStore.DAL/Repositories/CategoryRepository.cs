@@ -31,7 +31,9 @@ namespace OnlineStore.DAL.Repositories
 
         public IEnumerable<Category> Find(Func<Category, bool> predicate)
         {
-            return db.Categories.Where(predicate);
+            var value = db.Categories.Where(predicate).ToList();
+
+            return value;
         }
 
         public Category Get(int id)

@@ -47,28 +47,18 @@
                     <li>
                         <a href="#"><span>Купить</span></a>
                         <ul class="mobile-sub-menu">
-                            <li>
-                                <a href="#">Категория</a>
-                                <ul class="mobile-sub-menu">
-                                    <li><a href="shop-grid-sidebar-left.html">Категория 1</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="mobile-sub-menu">
-                            <li>
-                                <a href="#">Категория</a>
-                                <ul class="mobile-sub-menu">
-                                    <li><a href="cart.html">Категория 1</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="mobile-sub-menu">
-                            <li>
-                                <a href="#">Категория</a>
-                                <ul class="mobile-sub-menu">
-                                    <li><a href="product-details-default.html">Категория 1</a></li>
-                                </ul>
-                            </li>
+                            @foreach (var categoryVM in IndexMenuVM.categoryVMs)
+                            {
+                                <li>
+                                    <a href="#">@categoryVM.Name</a>
+                                    <ul class="mobile-sub-menu">
+                                        @foreach (var item in categoryVM.InverseCategoryNavigation)
+                                        {
+                                            <li><a href="cart.html">@item.Name</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
                         </ul>
                     </li>
                     <li><a href="contact-us.html">Контакты</a></li>
