@@ -5,13 +5,6 @@ namespace OnlineStore.WEB.Models
 {
     public partial class UserVM
     {
-        public UserVM()
-        {
-            Baskets = new HashSet<BasketVM>();
-            PurchaseHistories = new HashSet<PurchaseHistoryVM>();
-            StoresUsers = new HashSet<StoresUserVM>();
-        }
-
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

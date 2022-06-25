@@ -105,15 +105,15 @@ CREATE TABLE Products(
 )
 
 --Создаём таблицу Характеристик устройства
-CREATE TABLE Product_Info(
-    Id INT IDENTITY PRIMARY KEY,
-    Title NVARCHAR(40) NOT NULL,
-    Description NVARCHAR(200),
-
-    ProductId INT NULL,
-
-    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE SET NULL,
-)
+--CREATE TABLE Product_Info(
+--    Id INT IDENTITY PRIMARY KEY,
+--    Title NVARCHAR(40) NOT NULL,
+--    Description NVARCHAR(200),
+--
+--    ProductId INT NULL,
+--
+--    FOREIGN KEY (ProductId) REFERENCES Products (Id) ON DELETE SET NULL,
+--)
 
 --Создаём таблицу Картинок
 CREATE TABLE Pictures(
@@ -203,6 +203,29 @@ CREATE TABLE Stores_Users(
     FOREIGN KEY (UserId)  REFERENCES Users (Id),
 )
 
+CREATE TABLE Сharacteristics(
+    Id INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(30) NOT NULL
+)
 
-DROP TABLE Pictures
+CREATE TABLE CharacteristicValues(
+    Id INT IDENTITY PRIMARY KEY,
+    СharacteristicId INT NOT NULL,
+    Value NVARCHAR(30) NOT NULL,
+
+    FOREIGN KEY (СharacteristicId)  REFERENCES Сharacteristics (Id)
+)
+
+CREATE TABLE Product_CharacteristicValues(
+    ProductId INT NOT NULL,
+    CharacteristicValueId INT NOT NULL,
+
+    PRIMARY KEY (ProductId,CharacteristicValueId),
+
+    FOREIGN KEY (ProductId)  REFERENCES Products (Id),
+    FOREIGN KEY (CharacteristicValueId)  REFERENCES CharacteristicValues (Id),
+)
+
+
+DROP TABLE Сharacteristics
 DROP TABLE Stores_Products

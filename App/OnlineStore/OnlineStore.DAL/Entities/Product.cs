@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
 
 namespace OnlineStore.DAL.Entities
 {
@@ -8,7 +11,7 @@ namespace OnlineStore.DAL.Entities
         {
             Baskets = new HashSet<Basket>();
             Pictures = new HashSet<Picture>();
-            ProductInfos = new HashSet<ProductInfo>();
+            ProductCharacteristicValues = new HashSet<ProductCharacteristicValue>();
             PurchaseHistories = new HashSet<PurchaseHistory>();
             StoresProducts = new HashSet<StoresProduct>();
         }
@@ -24,7 +27,7 @@ namespace OnlineStore.DAL.Entities
         public virtual Category Category { get; set; }
         public virtual ICollection<Basket> Baskets { get; set; }
         public virtual ICollection<Picture> Pictures { get; set; }
-        public virtual ICollection<ProductInfo> ProductInfos { get; set; }
+        public virtual ICollection<ProductCharacteristicValue> ProductCharacteristicValues { get; set; }
         public virtual ICollection<PurchaseHistory> PurchaseHistories { get; set; }
         public virtual ICollection<StoresProduct> StoresProducts { get; set; }
     }

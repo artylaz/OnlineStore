@@ -4,15 +4,6 @@ namespace OnlineStore.WEB.Models
 {
     public partial class ProductVM
     {
-        public ProductVM()
-        {
-            Baskets = new HashSet<BasketVM>();
-            Pictures = new HashSet<PictureVM>();
-            ProductInfos = new HashSet<ProductInfoVM>();
-            PurchaseHistories = new HashSet<PurchaseHistoryVM>();
-            StoresProducts = new HashSet<StoresProductVM>();
-        }
-
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
@@ -24,7 +15,7 @@ namespace OnlineStore.WEB.Models
         public virtual CategoryVM Category { get; set; }
         public virtual ICollection<BasketVM> Baskets { get; set; }
         public virtual ICollection<PictureVM> Pictures { get; set; }
-        public virtual ICollection<ProductInfoVM> ProductInfos { get; set; }
+        public virtual ICollection<ProductCharacteristicValueVM> ProductCharacteristicValues { get; set; }
         public virtual ICollection<PurchaseHistoryVM> PurchaseHistories { get; set; }
         public virtual ICollection<StoresProductVM> StoresProducts { get; set; }
     }

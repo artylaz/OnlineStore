@@ -15,7 +15,7 @@ namespace OnlineStore.BLL.DTO
         public virtual CategoryDTO Category { get; set; }
         public virtual ICollection<BasketDTO> Baskets { get; set; }
         public virtual ICollection<PictureDTO> Pictures { get; set; }
-        public virtual ICollection<ProductInfoDTO> ProductInfos { get; set; }
+        public virtual ICollection<ProductCharacteristicValueDTO> ProductCharacteristicValues { get; set; }
         public virtual ICollection<PurchaseHistoryDTO> PurchaseHistories { get; set; }
         public virtual ICollection<StoresProductDTO> StoresProducts { get; set; }
     }

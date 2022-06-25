@@ -1,6 +1,11 @@
-﻿namespace OnlineStore.DAL.Entities
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
+
+namespace OnlineStore.DAL.Entities
 {
-    public class StoresUser
+    public partial class StoresUser
     {
         public int StoreId { get; set; }
         public int UserId { get; set; }

@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using OnlineStore.DAL.Entities;
+
+#nullable disable
 
 namespace OnlineStore.DAL.EF
 {
@@ -18,11 +22,12 @@ namespace OnlineStore.DAL.EF
         public virtual DbSet<Basket> Baskets { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<CharacteristicValue> CharacteristicValues { get; set; }
         public virtual DbSet<MonitorDatabase> MonitorDatabases { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<Picture> Pictures { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<ProductInfo> ProductInfos { get; set; }
+        public virtual DbSet<ProductCharacteristicValue> ProductCharacteristicValues { get; set; }
         public virtual DbSet<PurchaseHistory> PurchaseHistories { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<RolesPermission> RolesPermissions { get; set; }
@@ -30,10 +35,13 @@ namespace OnlineStore.DAL.EF
         public virtual DbSet<StoresProduct> StoresProducts { get; set; }
         public virtual DbSet<StoresUser> StoresUsers { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Сharacteristic> Сharacteristics { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
@@ -100,6 +108,19 @@ namespace OnlineStore.DAL.EF
                     .WithMany(p => p.InverseCategoryNavigation)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK__Categorie__Categ__1CF15040");
+            });
+
+            modelBuilder.Entity<CharacteristicValue>(entity =>
+            {
+                entity.Property(e => e.Value)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
+                entity.HasOne(d => d.Сharacteristic)
+                    .WithMany(p => p.CharacteristicValues)
+                    .HasForeignKey(d => d.СharacteristicId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Character__Сhara__1AD3FDA4");
             });
 
             modelBuilder.Entity<MonitorDatabase>(entity =>
@@ -170,21 +191,24 @@ namespace OnlineStore.DAL.EF
                     .HasConstraintName("FK__Products__Catego__21B6055D");
             });
 
-            modelBuilder.Entity<ProductInfo>(entity =>
+            modelBuilder.Entity<ProductCharacteristicValue>(entity =>
             {
-                entity.ToTable("Product_Info");
+                entity.HasKey(e => new { e.ProductId, e.CharacteristicValueId })
+                    .HasName("PK__Product___5D73F709A7323796");
 
-                entity.Property(e => e.Description).HasMaxLength(200);
+                entity.ToTable("Product_CharacteristicValues");
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(40);
+                entity.HasOne(d => d.CharacteristicValue)
+                    .WithMany(p => p.ProductCharacteristicValues)
+                    .HasForeignKey(d => d.CharacteristicValueId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Product_C__Chara__1EA48E88");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.ProductInfos)
+                    .WithMany(p => p.ProductCharacteristicValues)
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__Product_I__Produ__25869641");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Product_C__Produ__1DB06A4F");
             });
 
             modelBuilder.Entity<PurchaseHistory>(entity =>
@@ -312,6 +336,13 @@ namespace OnlineStore.DAL.EF
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK__Users__RoleId__1A14E395");
+            });
+
+            modelBuilder.Entity<Сharacteristic>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(30);
             });
 
             OnModelCreatingPartial(modelBuilder);
