@@ -2,7 +2,7 @@
 
 namespace OnlineStore.WEB.Models
 {
-    public partial class СharacteristicVM
+    public partial class CharacteristicVM
     {
         public int Id { get; set; }
         public string Name { get; set; }

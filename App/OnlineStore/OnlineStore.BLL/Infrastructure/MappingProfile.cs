@@ -16,7 +16,7 @@ namespace OnlineStore.BLL.Infrastructure
             CreateMap<Permission, PermissionDTO>();
             CreateMap<Picture, PictureDTO>();
             CreateMap<Product, ProductDTO>();
-            CreateMap<Сharacteristic, СharacteristicDTO>();
+            CreateMap<Characteristic, CharacteristicDTO>();
             CreateMap<ProductCharacteristicValue, ProductCharacteristicValueDTO>();
             CreateMap<CharacteristicValue, CharacteristicValueDTO>();
             CreateMap<PurchaseHistory, PurchaseHistoryDTO>();

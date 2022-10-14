@@ -1,25 +1,24 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnlineStore.BLL.Interfaces;
-using OnlineStore.BLL.Services;
 using OnlineStore.WEB.Models;
 using OnlineStore.WEB.Models.StaticModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineStore.WEB.Controllers
 {
     public class HomeController : Controller
     {
         ICategoryService categoryService;
+        IProductService productService;
         readonly IMapper mapper;
-        public HomeController(ICategoryService serv, IMapper mapper)
+        public HomeController(ICategoryService categoryService, IProductService productService, IMapper mapper)
         {
-            categoryService = serv;
+            this.categoryService = categoryService;
+            this.productService = productService;
             this.mapper = mapper;
+
 
             IndexMenuVM.categoryVMs = mapper.Map<IEnumerable<CategoryVM>>(categoryService.GetCategoriesMenu()).ToList();
         }
@@ -27,7 +26,15 @@ namespace OnlineStore.WEB.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            var latestProductsDTO = productService.GetLatestProducts();
+
+            if(latestProductsDTO != null)
+            {
+                return View(mapper.Map<IEnumerable<ProductVM>>(latestProductsDTO));
+            }
+            else
+                return View();
+
         }
     }
 }

@@ -8,7 +8,7 @@ namespace OnlineStore.BLL.DTO
         public int СharacteristicId { get; set; }
         public string Value { get; set; }
 
-        public virtual СharacteristicDTO Сharacteristic { get; set; }
+        public virtual CharacteristicDTO Сharacteristic { get; set; }
         public virtual ICollection<ProductCharacteristicValueDTO> ProductCharacteristicValues { get; set; }
     }
 }

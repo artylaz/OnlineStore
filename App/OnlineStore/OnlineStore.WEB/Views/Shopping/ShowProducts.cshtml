@@ -1,0 +1,140 @@
+﻿@model OnlineStore.WEB.Models.ShoppingViewModels.ShoppingVM
+
+<div class="breadcrumb-section">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between justify-content-md-between  align-items-center flex-md-row flex-column">
+                    <h3 class="breadcrumb-title">@Model.CategoryBranch.Last().Name</h3>
+                    <div class="breadcrumb-nav">
+                        <nav aria-label="breadcrumb">
+                            <ul>
+                                <li><a href="#">Купить</a></li>
+
+                                @for (int i = 0; i < Model.CategoryBranch.Length; i++)
+                                {
+                                    if (i != Model.CategoryBranch.Length - 1)
+                                    {
+                                        <li><a href="#">@Model.CategoryBranch[i].Name</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="active" aria-current="page">@Model.CategoryBranch[i].Name</li>
+                                    }
+                                }
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="shop-section">
+    <div class="container">
+        <div class="row flex-column-reverse flex-lg-row">
+            <div class="col-lg-3">
+
+                <div class="siderbar-section">
+
+                    <div class="sidebar-single-widget">
+                        <h6 class="sidebar-title">Фильтер</h6>
+                        <div class="sidebar-content">
+                            <div id="slider-range"></div>
+                            <div class="filter-type-price">
+                                <label for="amount">Цена:</label>
+                                <input type="text" id="amount">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="shop-sort-section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="sort-box d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column">
+
+                                <div class="page-amount">
+                                    <span>Показано 1-9 из 21 результатов</span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sort-product-tab-wrapper">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="tab-content tab-animate-zoom">
+
+                                        <div class="tab-pane active show sort-layout-single" id="layout-3-grid">
+                                            <div class="row">
+                                                @foreach (var item in Model.Products)
+                                                {
+                                                    <div class="col-xl-4 col-sm-6 col-12">
+
+
+                                                        <div class="product-default-single border-around">
+                                                            <div class="product-img-warp">
+                                                                <a href="product-details-default.html"
+                                                                   class="product-default-img-link">
+                                                                    <img src="assets/images/products_images/aments_products_image_1.jpg"
+                                                                         alt="" class="product-default-img img-fluid">
+                                                                </a>
+                                                                <div class="product-action-icon-link">
+                                                                    <ul>
+                                                                        <li>
+                                                                            <a href="#" data-toggle="modal" data-target="#modalQuickview">
+                                                                                <i class="icon-eye"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#" data-toggle="modal" data-target="#modalAddcart">
+                                                                                <i class="icon-shopping-cart"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-default-content">
+                                                                <h6 class="product-default-link">
+                                                                    <a href="product-details-default.html">
+                                                                        @item.Name
+                                                                    </a>
+                                                                </h6>
+                                                                <span class="product-default-price">
+                                                                    @item.Price ₽
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="page-pagination text-center">
+                        <ul>
+                            <li><a href="#">Назад</a></li>
+                            <li><a class="active" href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">Далее</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>

@@ -2,7 +2,7 @@
 
 namespace OnlineStore.BLL.DTO
 {
-    public partial class СharacteristicDTO
+    public partial class CharacteristicDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

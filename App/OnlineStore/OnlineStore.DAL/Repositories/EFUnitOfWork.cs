@@ -30,8 +30,6 @@ namespace OnlineStore.DAL.Repositories
 
         private ProductRepository productRepository;
 
-        private ProductInfoRepository productInfoRepository;
-
         private PurchaseHistoryRepository purchaseHistoryRepository;
 
         private RoleRepository roleRepository;
@@ -43,6 +41,53 @@ namespace OnlineStore.DAL.Repositories
         private StoresProductRepository storesProductRepository;
 
         private UserRepository userRepository;
+
+        private CharacteristicValueRepository characteristicValueRepository;
+        private ProductCharacteristicValueRepository productCharacteristicValueRepository;
+        private StoresUserRepository storesUserRepository;
+        private CharacteristicRepository characteristicRepository;
+
+
+
+        public IRepository<CharacteristicValue> CharacteristicValues
+        {
+            get
+            {
+                if (characteristicValueRepository == null)
+                    characteristicValueRepository = new CharacteristicValueRepository(db);
+                return characteristicValueRepository;
+            }
+        }
+
+        public IRepository<ProductCharacteristicValue> ProductCharacteristicValues
+        {
+            get
+            {
+                if (productCharacteristicValueRepository == null)
+                    productCharacteristicValueRepository = new ProductCharacteristicValueRepository(db);
+                return productCharacteristicValueRepository;
+            }
+        }
+
+        public IRepository<StoresUser> StoresUsers
+        {
+            get
+            {
+                if (storesUserRepository == null)
+                    storesUserRepository = new StoresUserRepository(db);
+                return storesUserRepository;
+            }
+        }
+
+        public IRepository<Characteristic> Characteristics
+        {
+            get
+            {
+                if (characteristicRepository == null)
+                    characteristicRepository = new CharacteristicRepository(db);
+                return characteristicRepository;
+            }
+        }
 
         public IRepository<Address> Addresses
         {
@@ -124,15 +169,6 @@ namespace OnlineStore.DAL.Repositories
             }
         }
 
-        public IRepository<ProductInfo> ProductInfos
-        {
-            get
-            {
-                if (productInfoRepository == null)
-                    productInfoRepository = new ProductInfoRepository(db);
-                return productInfoRepository;
-            }
-        }
 
         public IRepository<PurchaseHistory> PurchaseHistories
         {
@@ -194,7 +230,7 @@ namespace OnlineStore.DAL.Repositories
             }
         }
 
-
+        
 
         private bool disposed = false;
 

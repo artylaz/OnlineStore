@@ -30,6 +30,7 @@ namespace OnlineStore.WEB
 
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {

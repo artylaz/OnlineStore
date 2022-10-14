@@ -17,7 +17,7 @@ namespace OnlineStore.WEB.Infrastructure
             CreateMap<PictureDTO, PictureVM>();
             CreateMap<ProductDTO, ProductVM>();
             CreateMap<ProductCharacteristicValueDTO, ProductCharacteristicValueVM>();
-            CreateMap<СharacteristicDTO, СharacteristicVM>();
+            CreateMap<CharacteristicDTO, CharacteristicVM>();
             CreateMap<CharacteristicValueDTO, CharacteristicValueVM>();
             CreateMap<PurchaseHistoryDTO, PurchaseHistoryVM>();
             CreateMap<RoleDTO, RoleVM>();

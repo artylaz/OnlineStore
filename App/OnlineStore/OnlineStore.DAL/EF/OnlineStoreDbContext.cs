@@ -18,6 +18,7 @@ namespace OnlineStore.DAL.EF
         {
         }
 
+
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Basket> Baskets { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
@@ -35,7 +36,7 @@ namespace OnlineStore.DAL.EF
         public virtual DbSet<StoresProduct> StoresProducts { get; set; }
         public virtual DbSet<StoresUser> StoresUsers { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Сharacteristic> Сharacteristics { get; set; }
+        public virtual DbSet<Characteristic> Characteristics { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -116,9 +117,9 @@ namespace OnlineStore.DAL.EF
                     .IsRequired()
                     .HasMaxLength(30);
 
-                entity.HasOne(d => d.Сharacteristic)
+                entity.HasOne(d => d.Characteristic)
                     .WithMany(p => p.CharacteristicValues)
-                    .HasForeignKey(d => d.СharacteristicId)
+                    .HasForeignKey(d => d.CharacteristicId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Character__Сhara__1AD3FDA4");
             });
@@ -338,7 +339,7 @@ namespace OnlineStore.DAL.EF
                     .HasConstraintName("FK__Users__RoleId__1A14E395");
             });
 
-            modelBuilder.Entity<Сharacteristic>(entity =>
+            modelBuilder.Entity<Characteristic>(entity =>
             {
                 entity.Property(e => e.Name)
                     .IsRequired()

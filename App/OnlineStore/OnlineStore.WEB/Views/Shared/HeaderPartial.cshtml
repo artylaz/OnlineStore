@@ -8,7 +8,7 @@
                 <div class="col-12 d-flex justify-content-between align-items-center">
                     <div class="mobile-header--left">
                         <a href="" class="mobile-logo-link">
-                            <img src="images/logo/logo.png" alt="" class="mobile-logo-img">
+                            <img src="~/images/logo/logo.png" alt="" class="mobile-logo-img">
                         </a>
                     </div>
                     <div class="mobile-header--right">
@@ -34,7 +34,7 @@
                 <div class="col-3">
 
                     <div class="header-logo">
-                        <a href="index.html"><img src="images/logo/logo.png" alt=""></a>
+                        <a href="/Home/Index"><img src="~/images/logo/logo.png" alt=""></a>
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
                         <nav>
                             <ul>
                                 <li>
-                                    <a href="about-us.html">Главная</a>
+                                    <a href="/Home/Index">Главная</a>
                                 </li>
                                 <li class="has-dropdown has-megaitem">
                                     <a href="product-details-default.html">
@@ -85,7 +85,7 @@
                                                         @foreach (var item in categoryVM.InverseCategoryNavigation)
                                                         {
                                                             <li>
-                                                                <a href="#">@item.Name</a>
+                                                                <a href="@Url.Action("ShowProducts","Shopping",item)">@item.Name</a>
                                                             </li>
                                                         }
                                                     </ul>

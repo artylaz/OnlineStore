@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace OnlineStore.DAL.Entities
 {
-    public partial class Сharacteristic
+    public partial class Characteristic
     {
-        public Сharacteristic()
+        public Characteristic()
         {
             CharacteristicValues = new HashSet<CharacteristicValue>();
         }

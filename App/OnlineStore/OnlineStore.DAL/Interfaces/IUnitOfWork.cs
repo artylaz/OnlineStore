@@ -8,7 +8,7 @@ namespace OnlineStore.DAL.Interfaces
         IRepository<Address> Addresses { get; }
         IRepository<Basket> Baskets { get; }
         IRepository<Brand> Brands { get; }
-        IRepository<Category> Categories { get; set; }
+        IRepository<Category> Categories { get; }
         IRepository<CharacteristicValue> CharacteristicValues { get; }
         IRepository<MonitorDatabase> MonitorDatabases { get; }
         IRepository<Permission> Permissions { get; }
@@ -22,7 +22,7 @@ namespace OnlineStore.DAL.Interfaces
         IRepository<StoresProduct> StoresProducts { get; }
         IRepository<StoresUser> StoresUsers { get; }
         IRepository<User> Users { get; }
-        IRepository<Сharacteristic> Сharacteristics { get; }
+        IRepository<Characteristic> Characteristics { get; }
 
         void Save();
     }
