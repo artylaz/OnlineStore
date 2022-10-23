@@ -60,7 +60,7 @@
                                         <div class="product-default-single border-around">
                                             <div class="product-img-warp">
                                                 <a href="product-details-default.html" class="product-default-img-link">
-                                                    <img src="assets/images/products_images/aments_products_image_2.jpg" alt="" class="product-default-img img-fluid">
+                                                    <img src="@item.Pictures.FirstOrDefault(p=>p.Name == "800").Path" alt="" class="product-default-img img-fluid">
                                                 </a>
                                                 <div class="product-action-icon-link">
                                                     <ul>

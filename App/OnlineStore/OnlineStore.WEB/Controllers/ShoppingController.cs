@@ -31,5 +31,11 @@ namespace OnlineStore.WEB.Controllers
 
             return View(shopVM);
         }
+
+        [HttpGet]
+        public IActionResult ShowProduct(ProductVM productVM)
+        {
+            return View(productVM);
+        }
     }
 }
