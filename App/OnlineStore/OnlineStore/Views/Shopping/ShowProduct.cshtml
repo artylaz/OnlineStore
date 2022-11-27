@@ -1,5 +1,115 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ShowProductVM
+
+<div class="breadcrumb-section">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between justify-content-md-between  align-items-center flex-md-row flex-column">
+                    <h3 class="breadcrumb-title">@Model.Name</h3>
+                    <div class="breadcrumb-nav">
+                        @*<nav aria-label="breadcrumb">
+                                <ul>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="shop-grid-sidebar-left.html">Shop</a></li>
+                                    <li class="active" aria-current="page">@Model.Name</li>
+                                </ul>
+                            </nav>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<div class="product-details-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="product-details-gallery-area">
+                    <div class="product-large-image product-large-image-horaizontal">
+
+                        @foreach (var item in Model.Pictures)
+                        {
+                            <div class="product-image-large-single zoom-image-hover">
+                                <img src="@item.Path" alt="">
+                            </div>
+                        }
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="product-details-content-area">
+                   
+                    <div class="product-details-text">
+                        <h4 class="title">@Model.Name</h4>
+                        <div class="price">@Model.Price ₽</div>
+                    </div>
+
+                    <div class="product-details-variable">
+                        
+                        <div class="d-flex align-items-center">
+                            <div class="variable-single-item ">
+                                <span>Количество</span>
+                                <div class="product-variable-quantity">
+                                    <input min="1" max="100" value="1" type="number">
+                                </div>
+                            </div>
+
+                            <div class="product-add-to-cart-btn">
+                                <a href="#" data-toggle="modal" data-target="#modalAddcart">Корзина +</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<div class="product-details-content-tab-section section-inner-bg section-top-gap-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="product-details-content-tab-wrapper">
+
+                    
+                    <ul class="nav tablist product-details-content-tab-btn d-flex justify-content-center">
+
+                        <li>
+                            <a class="nav-link active" data-toggle="tab" href="#specification">
+                                <h5>Характеристики @Model.Name</h5>
+                            </a>
+                        </li>
+                    </ul> 
+
+                    <div class="product-details-content-tab">
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active show" id="specification">
+                                <div class="single-tab-content-item">
+                                    <table class="table table-bordered mb-20">
+                                        <tbody>
+                                            @foreach (var item in Model.Characteristics)
+                                            {
+                                                <tr>
+                                                    <th scope="row">@item.Name</th>
+                                                    <td>@item.Value</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> 
+
+                        </div>
+                    </div> 
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

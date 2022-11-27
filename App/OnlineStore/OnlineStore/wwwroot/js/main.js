@@ -5,17 +5,17 @@
     * Commons Variables
     *****************************/
     var $window = $(window),
-    $body = $('body');
-    
+        $body = $('body');
+
     /****************************
     * Sticky Menu
     *****************************/
-    $(window).on('scroll',function() {    
+    $(window).on('scroll', function () {
         var scroll = $(window).scrollTop();
         if (scroll < 100) {
-         $(".sticky-header").removeClass("sticky");
-        }else{
-         $(".sticky-header").addClass("sticky");
+            $(".sticky-header").removeClass("sticky");
+        } else {
+            $(".sticky-header").addClass("sticky");
         }
     });
 
@@ -28,24 +28,24 @@
             $offCanvas = $('.offcanvas'),
             $offCanvasOverlay = $('.offcanvas-overlay'),
             $mobileMenuToggle = $('.mobile-menu-toggle');
-            $offCanvasToggle.on('click', function (e) {
-                e.preventDefault();
-                var $this = $(this),
-                    $target = $this.attr('href');
-                $body.addClass('offcanvas-open');
-                $($target).addClass('offcanvas-open');
-                $offCanvasOverlay.fadeIn();
-                if ($this.parent().hasClass('mobile-menu-toggle')) {
-                    $this.addClass('close');
-                }
-            });
-            $('.offcanvas-close, .offcanvas-overlay').on('click', function (e) {
-                e.preventDefault();
-                $body.removeClass('offcanvas-open');
-                $offCanvas.removeClass('offcanvas-open');
-                $offCanvasOverlay.fadeOut();
-                $mobileMenuToggle.find('a').removeClass('close');
-            });
+        $offCanvasToggle.on('click', function (e) {
+            e.preventDefault();
+            var $this = $(this),
+                $target = $this.attr('href');
+            $body.addClass('offcanvas-open');
+            $($target).addClass('offcanvas-open');
+            $offCanvasOverlay.fadeIn();
+            if ($this.parent().hasClass('mobile-menu-toggle')) {
+                $this.addClass('close');
+            }
+        });
+        $('.offcanvas-close, .offcanvas-overlay').on('click', function (e) {
+            e.preventDefault();
+            $body.removeClass('offcanvas-open');
+            $offCanvas.removeClass('offcanvas-open');
+            $offCanvasOverlay.fadeOut();
+            $mobileMenuToggle.find('a').removeClass('close');
+        });
     })();
 
 
@@ -133,7 +133,7 @@
      ***********************************************/
     $('.company-logo-slider').slick({
         autoplay: true,
-        infinite:true,
+        infinite: true,
         arrows: false,
         slidesToShow: 4,
         slidesToScroll: 1,
@@ -163,7 +163,7 @@
     /***********************************
     * Gallery - Horizontal
     ************************************/
-   $('.product-large-image-horaizontal').slick({
+    $('.product-large-image-horaizontal').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
@@ -208,7 +208,7 @@
     /***********************************
     * Gallery - Vertical
     ************************************/
-   $('.product-large-image-vertical').slick({
+    $('.product-large-image-vertical').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
@@ -252,7 +252,7 @@
         ]
     });
 
-    
+
     /********************************
     *  Product Gallery - Image Zoom
     **********************************/
@@ -300,7 +300,7 @@
     /***********************************
     * Modal  Quick View Image
     ************************************/
-   $('.modal-product-image-large').slick({
+    $('.modal-product-image-large').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
@@ -323,7 +323,7 @@
     /***********************************
     * Blog - Slider
     ************************************/
-   $('.blog-image-slider').slick({
+    $('.blog-image-slider').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         focusOnSelect: true,
@@ -335,7 +335,7 @@
     /***********************************
     * Testimonial - Slider
     ************************************/
-   $('.testimonial-slider').slick({
+    $('.testimonial-slider').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         focusOnSelect: true,
@@ -351,29 +351,29 @@
     /************************************************
      * Price Slider
      ***********************************************/
-    $( "#slider-range" ).slider({
+    $("#slider-range").slider({
         range: true,
         min: 0,
-        max: 500,
-        values: [ 75, 300 ],
-        slide: function( event, ui ) {
-          $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        max: 10000,
+        values: [1000, 3000],
+        slide: function (event, ui) {
+            $("#amount").val("P" + ui.values[0] + " - P" + ui.values[1]);
         }
-      });
-      $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-        " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+    });
+    $("#amount").val("P" + $("#slider-range").slider("values", 0) +
+        " - P" + $("#slider-range").slider("values", 1));
 
 
     /************************************************
      * Video  Popup
      ***********************************************/
-    $('.video-play-btn').venobox(); 
+    $('.video-play-btn').venobox();
 
     /************************************************
      * Scroll Top
      ***********************************************/
     $('body').materialScrollTop();
 
- 
+
 })(jQuery);
 

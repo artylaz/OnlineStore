@@ -8,7 +8,7 @@ using OnlineStore.Models.ViewModels;
 
 namespace OnlineStore.Controllers
 {
-    public class ShoppingController: Controller
+    public class ShoppingController : Controller
     {
         private readonly OnlineStore_DbContext db;
         public ShoppingController(OnlineStore_DbContext db)
@@ -32,7 +32,7 @@ namespace OnlineStore.Controllers
             }
             else
             {
-                products = db.Products.Where(p => p.CategoryId == category.Id).Include(p=>p.Pictures).ToList();
+                products = db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).ToList();
             }
 
             var showProductsVM = new ShowProductsVM { Products = products, Category = category };
@@ -43,7 +43,22 @@ namespace OnlineStore.Controllers
         [HttpGet]
         public IActionResult ShowProduct(Product product)
         {
-            return View();
+            var characteristics = db.ProductCharacteristics.Where(p => p.ProductId == product.Id)
+                .Include(p => p.Characteristic).Select(p => p.Characteristic).ToList();
+
+            var productVM = new ShowProductVM
+            {
+                Id = product.Id,
+                Name = product.Name,
+                CategoryId = product.CategoryId,
+                Characteristics = characteristics,
+                Pictures = db.Pictures.Where(p=>p.ProductId == product.Id).ToList(),
+                Category = product.Category,
+                Price = product.Price,
+                Rating = product.Rating
+            };
+
+            return View(productVM);
         }
     }
 }

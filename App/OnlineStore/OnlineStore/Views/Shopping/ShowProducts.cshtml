@@ -75,7 +75,7 @@
                                                                 <div class="product-action-icon-link">
                                                                     <ul>
                                                                         <li>
-                                                                            <a href="#" data-toggle="modal" data-target="#modalQuickview">
+                                                                            <a href="@Url.Action("ShowProduct","Shopping",item)" data-toggle="modal" data-target="#modalQuickview">
                                                                                 <i class="icon-eye"></i>
                                                                             </a>
                                                                         </li>
@@ -89,7 +89,7 @@
                                                             </div>
                                                             <div class="product-default-content">
                                                                 <h6 class="product-default-link">
-                                                                    <a href="product-details-default.html">
+                                                                    <a href="@Url.Action("ShowProduct","Shopping",item)">
                                                                         @item.Name
                                                                     </a>
                                                                 </h6>
