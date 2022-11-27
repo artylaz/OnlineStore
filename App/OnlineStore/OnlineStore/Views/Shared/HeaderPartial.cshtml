@@ -78,7 +78,7 @@
                                             @foreach (var categoryVM in IndexMenuVM.Categorys)
                                             {
                                                 <li class="mega-menu-item">
-                                                    <a href="#" class="mega-menu-item-title">@categoryVM.Name</a>
+                                                    <a href="@Url.Action("ShowProducts","Shopping",categoryVM)" class="mega-menu-item-title">@categoryVM.Name</a>
                                                     <ul class="mega-menu-sub">
                                                         @foreach (var item in categoryVM.InverseCategoryNavigation)
                                                         {
