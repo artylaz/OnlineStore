@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32929.386
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C9674DCB-5085-4A16-B785-4C70DD1589BD}") = "IntegrationServices_OnlineStore_Db", "IntegrationServices_OnlineStore_Db\IntegrationServices_OnlineStore_Db.dtproj", "{E3395FF0-8128-4438-A776-EAE73A220A25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3395FF0-8128-4438-A776-EAE73A220A25}.Development|Default.ActiveCfg = Development
+		{E3395FF0-8128-4438-A776-EAE73A220A25}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2882D7C7-04A3-4071-8EEB-E304D59946A4}
+	EndGlobalSection
+EndGlobal

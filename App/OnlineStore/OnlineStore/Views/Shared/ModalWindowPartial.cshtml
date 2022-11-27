@@ -1,0 +1,69 @@
+﻿<button class="material-scrolltop" type="button"></button>
+
+<div id="mobile-menu-offcanvas" class="offcanvas offcanvas-leftside offcanvas-mobile-menu-section">
+
+    <div class="offcanvas-header text-right">
+        <button class="offcanvas-close"><i class="fa fa-times"></i></button>
+    </div>
+
+    <div class="offcanvas-mobile-menu-wrapper">
+
+        <div class="mobile-menu-top">
+            <span>Магазин комплектующих для компьютера</span>
+
+        </div>
+
+        <div class="mobile-menu-center">
+            <div class="mobile-menu-customer-support">
+                <div class="mobile-menu-customer-support-icon">
+                    <img src="~/images/icon/support-icon.png" alt="">
+                </div>
+                <div class="mobile-menu-customer-support-text">
+                    <span>Связаться со мной</span>
+                    <a class="mobile-menu-customer-support-text-phone" href="tel:+79321199925">(932) 119 99 25</a>
+                </div>
+            </div>
+
+            <ul class="mobile-action-icon">
+                <li class="mobile-action-icon-item">
+                    <a href="cart.html" class="mobile-action-icon-link">
+                        <i class="icon-shopping-cart"></i>
+                        <span class="mobile-action-icon-item-count">3</span>
+                    </a>
+                </li>
+                <li class="mobile-action-icon-item">
+                    <a href="#" class="mobile-action-icon-link">
+                        <i class="icon-user"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mobile-menu-bottom">
+
+            <div class="offcanvas-menu">
+                <ul>
+                    <li><a href="#">Главная</a></li>
+                    <li>
+                        <a href="#"><span>Купить</span></a>
+                        <ul class="mobile-sub-menu">
+                            @foreach (var categoryVM in IndexMenuVM.Categorys)
+                            {
+                                <li>
+                                    <a href="#">@categoryVM.Name</a>
+                                    <ul class="mobile-sub-menu">
+                                        @foreach (var item in categoryVM.InverseCategoryNavigation)
+                                        {
+                                            <li><a href="cart.html">@item.Name</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
