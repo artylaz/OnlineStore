@@ -1,0 +1,76 @@
+﻿@model ShowBasketVM
+<!-- ...:::: Start Cart Section:::... -->
+<div class="cart-section mt-10">
+    <form method="get" asp-action="BuyProducts" asp-controller="Shopping">
+        <div class="cart-table-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table_desc">
+                            <div class="table_page table-responsive">
+                                <table>
+                                    <!-- Start Cart Table Head -->
+                                    <thead>
+                                        <tr>
+                                            <th class="product_remove">Удалить</th>
+                                            <th class="product_thumb">Изображение</th>
+                                            <th class="product_name">Товар</th>
+                                            <th class="product-price">Цена</th>
+                                            <th class="product_quantity">Количество</th>
+                                            <th class="product_total">Всего</th>
+                                        </tr>
+                                    </thead> <!-- End Cart Table Head -->
+                                    <tbody>
+                                        @for (int i = 0; i < Model.Baskets.Count; i++)
+                                        {
+                                            <tr name="trProduct">
+                                                <td class="product_remove"><a href="@Url.Action("RemoveBasket","Shopping",Model.Baskets[i])"><i class="fa fa-trash-o"></i></a></td>
+                                                <td class="product_thumb"><a href="@Url.Action("ShowProduct","Shopping",Model.Baskets[i].Product)"><img src="@Model.Baskets[i].Product.Pictures.Last().Path" alt=""></a></td>
+                                                <td class="product_name"><a href="@Url.Action("ShowProduct","Shopping",Model.Baskets[i].Product)">@Model.Baskets[i].Product.Name</a></td>
+                                                <td class="product-price">@Model.Baskets[i].Product.Price ₽</td>
+                                                <td class="product_quantity"><label>Количество</label> <input oninput="Oninput()" min="1" max="100" asp-for="Baskets[i].AmountProduct" type="number"></td>
+                                                <td class="product_total"></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Cart Table -->
+
+
+        <div class="coupon_area">
+            <div class="container">
+                <div class="row d-flex align-items-center justify-content-center">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code right">
+                            <h3>Cart Totals</h3>
+                            <div class="coupon_inner">
+                                <div class="cart_subtotal">
+                                    <p>Промежуточный итог</p>
+                                    <p class="cart_amount" name="cartPrice">@Model.TotalPrice ₽</p>
+                                </div>
+
+                                <div class="cart_subtotal">
+                                    <p>Всего</p>
+                                    <p class="cart_amount" name="cartPrice">@Model.TotalPrice ₽</p>
+                                </div>
+                                <div class="checkout_btn">
+                                    <button type="submit">Купить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @for (int i = 0; i < Model.Baskets.Count; i++)
+        {
+            <input asp-for="Baskets[i].UserId" hidden />
+            <input asp-for="Baskets[i].ProductId" hidden />
+        }
+    </form>
+</div>

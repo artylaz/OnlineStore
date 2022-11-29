@@ -22,18 +22,9 @@ namespace OnlineStore.Controllers
             List<Product> products = new List<Product>();
 
             if (category.CategoryId == null)
-            {
-                var categories = db.Categories.Where(c => c.CategoryId == category.Id).ToList();
-
-                foreach (var item in categories)
-                {
-                    products.AddRange(db.Products.Where(p => p.CategoryId == item.Id).Include(p => p.Pictures));
-                }
-            }
+                products = db.Products.Include(p => p.Pictures).ToList();
             else
-            {
                 products = db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).ToList();
-            }
 
             var showProductsVM = new ShowProductsVM { Products = products, Category = category };
 
@@ -52,13 +43,96 @@ namespace OnlineStore.Controllers
                 Name = product.Name,
                 CategoryId = product.CategoryId,
                 Characteristics = characteristics,
-                Pictures = db.Pictures.Where(p=>p.ProductId == product.Id).ToList(),
+                Pictures = db.Pictures.Where(p => p.ProductId == product.Id).ToList(),
                 Category = product.Category,
                 Price = product.Price,
                 Rating = product.Rating
             };
 
             return View(productVM);
+        }
+
+        [HttpGet]
+        public IActionResult AddToBasket(AddToBasketVM addToBasketVM)
+        {
+            var userId = int.Parse(User.Claims.First().Value);
+
+            var category = db.Categories.FirstOrDefault(c => c.Id == addToBasketVM.CategoryId);
+
+            var basket = db.Baskets.FirstOrDefault(c => c.UserId == userId);
+
+            if (basket == null)
+            {
+                basket = new Basket { UserId = userId, ProductId = addToBasketVM.ProductId, AmountProduct = addToBasketVM.AmountProduct };
+                db.Baskets.Add(basket);
+            }
+            else
+            {
+                var basketProduct = db.Baskets.Find(addToBasketVM.ProductId, userId);
+
+                if (basketProduct != null)
+                {
+                    basketProduct.AmountProduct += addToBasketVM.AmountProduct;
+                    db.Entry(basketProduct).State = EntityState.Modified;
+                }
+                else
+                {
+                    basketProduct = new Basket { AmountProduct = addToBasketVM.AmountProduct, ProductId = addToBasketVM.ProductId, UserId = userId };
+                    db.Baskets.Add(basketProduct);
+                }
+
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("ShowProducts", category);
+        }
+
+        [HttpGet]
+        public IActionResult ShowBasket()
+        {
+            List<Basket> baskets = new();
+
+            if (int.TryParse(User.Claims.First().Value, out int userId))
+            {
+                baskets = db.Baskets.Where(b => b.UserId == userId).Include(b => b.User).Include(b => b.Product).ThenInclude(p => p.Pictures).ToList();
+            }
+
+            return View(new ShowBasketVM { Baskets = baskets });
+        }
+
+        [HttpGet]
+        public IActionResult RemoveBasket(Basket basket)
+        {
+            if (basket != null)
+            {
+                db.Baskets.Remove(basket);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ShowBasket");
+        }
+
+        [HttpGet]
+        public IActionResult BuyProducts(List<Basket> Baskets)
+        {
+            if (Baskets.Count > 0)
+            {
+                foreach (var item in Baskets)
+                {
+                    db.PurchaseHistories.Add(new PurchaseHistory
+                    {
+                        AmountProduct = (int)item.AmountProduct,
+                        ProductId = item.ProductId,
+                        UserId = item.UserId,
+                        DatePurchase = DateTime.Now
+                    });
+                }
+                db.Baskets.RemoveRange(Baskets);
+
+                db.SaveChanges();
+            }
+            return RedirectToAction("ShowBasket");
         }
     }
 }

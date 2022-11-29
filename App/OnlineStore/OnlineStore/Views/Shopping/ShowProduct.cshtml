@@ -1,5 +1,6 @@
 ﻿@model ShowProductVM
 
+
 <div class="breadcrumb-section">
     <div class="breadcrumb-wrapper">
         <div class="container">
@@ -21,55 +22,59 @@
     </div>
 </div> 
 
-<div class="product-details-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="product-details-gallery-area">
-                    <div class="product-large-image product-large-image-horaizontal">
+<form method="get" asp-action="AddToBasket" asp-controller="Shopping">
+    <input hidden name="IdCategory" value="@Model.CategoryId" />
+    <input hidden name="ProductId" value="@Model.Id" />
 
-                        @foreach (var item in Model.Pictures)
-                        {
-                            <div class="product-image-large-single zoom-image-hover">
-                                <img src="@item.Path" alt="">
-                            </div>
-                        }
+    <div class="product-details-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="product-details-gallery-area">
+                        <div class="product-large-image product-large-image-horaizontal">
+
+                            @foreach (var item in Model.Pictures)
+                            {
+                                <div class="product-image-large-single zoom-image-hover">
+                                    <img src="@item.Path" alt="">
+                                </div>
+                            }
 
 
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="product-details-content-area">
-                   
-                    <div class="product-details-text">
-                        <h4 class="title">@Model.Name</h4>
-                        <div class="price">@Model.Price ₽</div>
-                    </div>
+                <div class="col-md-6">
+                    <div class="product-details-content-area">
 
-                    <div class="product-details-variable">
-                        
-                        <div class="d-flex align-items-center">
-                            <div class="variable-single-item ">
-                                <span>Количество</span>
-                                <div class="product-variable-quantity">
-                                    <input min="1" max="100" value="1" type="number">
+                        <div class="product-details-text">
+                            <h4 class="title">@Model.Name</h4>
+                            <div class="price">@Model.Price ₽</div>
+                        </div>
+
+                        <div class="product-details-variable">
+
+                            <div class="d-flex align-items-center">
+                                <div class="variable-single-item ">
+                                    <span>Количество</span>
+                                    <div class="product-variable-quantity">
+                                        <input name="AmountProduct" min="1" max="100" value="1" type="number">
+                                    </div>
+                                </div>
+
+                                <div class="product-add-to-cart-btn">
+                                    <button type="submit" data-toggle="modal" data-target="#modalAddcart">Корзина +</button>
                                 </div>
                             </div>
 
-                            <div class="product-add-to-cart-btn">
-                                <a href="#" data-toggle="modal" data-target="#modalAddcart">Корзина +</a>
-                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div> 
-
+</form>
 <div class="product-details-content-tab-section section-inner-bg section-top-gap-100">
     <div class="container">
         <div class="row">

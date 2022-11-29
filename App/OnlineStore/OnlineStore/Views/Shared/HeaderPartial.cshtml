@@ -25,87 +25,111 @@
 
 
 <header class="header-section d-lg-block d-none">
+    <form id="yourFormId" method="post" asp-controller="Account" asp-action="Logout">
+        <div class="header-center">
+            <div class="container">
+                <div class="row d-flex justify-content-between align-items-center">
+                    <div class="col-3">
 
-    <div class="header-center">
-        <div class="container">
-            <div class="row d-flex justify-content-between align-items-center">
-                <div class="col-3">
-
-                    <div class="header-logo">
-                        <a href="/Home/Index"><img src="~/images/logo/logo.png" alt=""></a>
+                        <div class="header-logo">
+                            <a href="/Home/Index"><img src="~/images/logo/logo.png" alt=""></a>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-3 text-right">
+                    <div class="col-3 text-right" style="box-sizing: content-box; ">
 
-                    <ul class="header-action-icon">
-                        <li>
-                            <a href="#offcanvas-add-cart" class="offcanvas-toggle">
-                                <i class="icon-shopping-cart"></i>
-                                <span class="header-action-icon-item-count">3</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#offcanvas-add-cart" class="offcanvas-toggle">
-                                <i class="icon-user"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <ul class="header-action-icon">
 
-    <div class="header-bottom sticky-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-
-                    <div class="main-menu">
-                        <nav>
-                            <ul>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
                                 <li>
-                                    <a href="/Home/Index">Главная</a>
-                                </li>
-                                <li class="has-dropdown has-megaitem">
-                                    <a href="product-details-default.html">
-                                        Купить <i class="fa fa-angle-down"></i>
+                                    <a href="/Account/Login">
+                                        <i class="icon-user"></i>
                                     </a>
-
-                                    <div class="mega-menu">
-                                        <ul class="mega-menu-inner">
-
-                                            @foreach (var categoryVM in IndexMenuVM.Categorys)
-                                            {
-                                                <li class="mega-menu-item">
-                                                    <a href="@Url.Action("ShowProducts","Shopping",categoryVM)" class="mega-menu-item-title">@categoryVM.Name</a>
-                                                    <ul class="mega-menu-sub">
-                                                        @foreach (var item in categoryVM.InverseCategoryNavigation)
-                                                        {
-                                                            <li>
-                                                                <a href="@Url.Action("ShowProducts","Shopping",item)">@item.Name</a>
-                                                            </li>
-                                                        }
-                                                    </ul>
-                                                </li>
-                                            }
-                                        </ul>
-                                        <div class="menu-banner">
-                                            <a href="" class="menu-banner-link">
-                                                <img class="menu-banner-img" src="images/banner/menu-banner.jpg"
-                                                     alt="">
-                                            </a>
-                                        </div>
-                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="/Shopping/ShowBasket">
+                                        <i class="icon-shopping-cart"></i>
+                                        <span class="header-action-icon-item-count">3</span>
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#">Контакты</a>
+                                    <a href="#" style="box-sizing: content-box; ">
+                                        @User.Claims.Last().Value
+                                    </a>
                                 </li>
-                            </ul>
-                        </nav>
+                                <li>
+                                    <a href="#" id="yourLinkId">
+                                        <i class="icon-arrow-right-circle"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="header-bottom sticky-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="main-menu">
+                            <nav>
+                                <ul>
+                                    <li>
+                                        <a href="/Home/Index">Главная</a>
+                                    </li>
+                                    <li class="has-dropdown has-megaitem">
+                                        <a href="/Shopping/ShowProducts">
+                                            Купить <i class="fa fa-angle-down"></i>
+                                        </a>
+
+                                        <div class="mega-menu">
+                                            <ul class="mega-menu-inner">
+
+                                                @foreach (var categoryVM in IndexMenuVM.Categorys)
+                                                {
+                                                    <li class="mega-menu-item">
+                                                        <a href="@Url.Action("ShowProducts","Shopping",categoryVM)" class="mega-menu-item-title">@categoryVM.Name</a>
+                                                        <ul class="mega-menu-sub">
+                                                            @foreach (var item in categoryVM.InverseCategoryNavigation)
+                                                            {
+                                                                <li>
+                                                                    <a href="@Url.Action("ShowProducts","Shopping",item)">@item.Name</a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </li>
+                                                }
+                                            </ul>
+                                            <div class="menu-banner">
+                                                <a href="" class="menu-banner-link">
+                                                    <img class="menu-banner-img" src="images/banner/menu-banner.jpg"
+                                                         alt="">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a href="#">Контакты</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <script>
+            document.getElementById("yourLinkId").onclick = function () {
+                document.getElementById("yourFormId").submit();
+            }
+        </script>
+    </form>
 </header>

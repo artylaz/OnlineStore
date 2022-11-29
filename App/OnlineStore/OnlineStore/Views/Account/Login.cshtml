@@ -1,0 +1,37 @@
+﻿@model LoginViewModel
+
+
+<div class="customer_login mt-10">
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            
+            <div class="col-lg-6 col-md-6">
+                <div class="account_form">
+                    <h3>Войти</h3>
+                    <form method="post" asp-controller="Account" asp-action="Login">
+                        <div class="default-form-box mb-20">
+                            <span asp-validation-for="Email" class="val"></span>
+                            <label>Email <span>*</span></label>
+                            <input type="email" name="Email" placeholder="Email">
+                        </div>
+                        <div class="default-form-box mb-20">
+                            <span asp-validation-for="Password" class="val"></span>
+                            <label>Пароль <span>*</span></label>
+                            <input type="password" name="Password" placeholder="Пароль">
+                        </div>
+                        <div class="login_submit">
+                            <button class="mb-20" type="submit">Войти</button>
+                            <label class="checkbox-default mb-20" for="offer">
+                                <input type="checkbox" id="offer">
+                                <span>Запомнить</span>
+                            </label>
+                            <a href="/Account/Register">Зарегистрироваться</a>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div> 

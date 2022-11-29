@@ -1,0 +1,51 @@
+﻿@model RegisterViewModel
+
+<div class="customer_login mt-10">
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            
+            <div class="col-lg-6 col-md-6">
+                <div class="account_form register">
+                    <h3>Регистрация</h3>
+                    <form method="post" asp-controller="Account" asp-action="Register">
+                        <div class="default-form-box mb-20">
+                            <span asp-validation-for="LastName" class="val"></span>
+                            <label>Фамилия <span>*</span></label>
+                            <input type="text" name="LastName" placeholder="Фамилия" autofocus="">
+                        </div>
+                        <div class="default-form-box mb-20">
+                            <span asp-validation-for="FirstName" class="val"></span>
+                            <label>Имя <span>*</span></label>
+                            <input type="text" name="FirstName" placeholder="Имя" autofocus="">
+                        </div>
+                        <div class="default-form-box mb-20">
+                            <span asp-validation-for="Email" class="val"></span>
+                            <label>Email <span>*</span></label>
+                            <input type="email" name="Email" placeholder="Email">
+
+                        </div>
+                        <div class="default-form-box mb-20">
+                            <span asp-validation-for="Phone" class="val"></span>
+                            <label>Телефон <span>*</span></label>
+                            <input type="tel" name="Phone" placeholder="+7 000 000 00 00">
+                        </div>
+                        <div class="default-form-box mb-20">
+                            <span asp-validation-for="Password" class="val"></span>
+                            <label>Пароль <span>*</span></label>
+                            <input type="password" name="Password">
+                        </div>
+                        <div class="default-form-box mb-20">
+                            <span asp-validation-for="PasswordConfirm" class="val"></span>
+                            <label>Подтвердить пароль <span>*</span></label>
+                            <input type="password" name="PasswordConfirm">
+                        </div>
+                        <div class="login_submit">
+                            <button type="submit">Зарегистрировать</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div> 

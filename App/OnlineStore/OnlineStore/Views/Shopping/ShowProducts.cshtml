@@ -8,7 +8,7 @@
                     <h3 class="breadcrumb-title">@Model.Category.Name</h3>
                     <div class="breadcrumb-nav">
                         <nav aria-label="breadcrumb">
-                            
+
                         </nav>
                     </div>
                 </div>
@@ -75,12 +75,12 @@
                                                                 <div class="product-action-icon-link">
                                                                     <ul>
                                                                         <li>
-                                                                            <a href="@Url.Action("ShowProduct","Shopping",item)" data-toggle="modal" data-target="#modalQuickview">
+                                                                            <a href="@Url.Action("ShowProduct","Shopping",item)">
                                                                                 <i class="icon-eye"></i>
                                                                             </a>
                                                                         </li>
                                                                         <li>
-                                                                            <a href="#" data-toggle="modal" data-target="#modalAddcart">
+                                                                            <a href="@Url.Action("AddToBasket","Shopping",new AddToBasketVM {  CategoryId = Model.Category.Id, ProductId = item.Id})">
                                                                                 <i class="icon-shopping-cart"></i>
                                                                             </a>
                                                                         </li>
