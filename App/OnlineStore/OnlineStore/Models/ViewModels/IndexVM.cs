@@ -9,6 +9,6 @@ namespace OnlineStore.Models.ViewModels
 {
     public class IndexVM
     {
-        public List<Product> LatestProducts { get; set; }
+        public List<Product> Products { get; set; }
     }
 }

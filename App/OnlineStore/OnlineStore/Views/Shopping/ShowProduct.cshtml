@@ -20,9 +20,9 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
-<form method="get" asp-action="AddToBasket" asp-controller="Shopping">
+<form id="formProductId" method="get" asp-action="AddToBasket" asp-controller="Shopping">
     <input hidden name="IdCategory" value="@Model.CategoryId" />
     <input hidden name="ProductId" value="@Model.Id" />
 
@@ -64,7 +64,7 @@
                                 </div>
 
                                 <div class="product-add-to-cart-btn">
-                                    <button type="submit" data-toggle="modal" data-target="#modalAddcart">Корзина +</button>
+                                    <a href="#" id="LinkProductId">Корзина +</a>
                                 </div>
                             </div>
 
@@ -81,7 +81,7 @@
             <div class="col-12">
                 <div class="product-details-content-tab-wrapper">
 
-                    
+
                     <ul class="nav tablist product-details-content-tab-btn d-flex justify-content-center">
 
                         <li>
@@ -89,11 +89,11 @@
                                 <h5>Характеристики @Model.Name</h5>
                             </a>
                         </li>
-                    </ul> 
+                    </ul>
 
                     <div class="product-details-content-tab">
                         <div class="tab-content">
-                            
+
                             <div class="tab-pane active show" id="specification">
                                 <div class="single-tab-content-item">
                                     <table class="table table-bordered mb-20">
@@ -108,13 +108,18 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div> 
+                            </div>
 
                         </div>
-                    </div> 
+                    </div>
 
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>
+<script>
+    document.getElementById("LinkProductId").onclick = function () {
+        document.getElementById("formProductId").submit();
+    }
+</script> 

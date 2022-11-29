@@ -9,6 +9,7 @@ namespace OnlineStore.Models.StaticModels
 {
     public static class IndexMenuVM
     {
+        public static int UserId { get; set; }
         public static List<Category> Categorys { get; set; }
     }
 }

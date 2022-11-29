@@ -55,22 +55,22 @@
                                 <div class="product-default-slider product-default-slider-4grids-1row">
 
 
-                                    @foreach (var item in Model.LatestProducts)
+                                    @foreach (var item in Model.Products)
                                     {
                                         <div class="product-default-single border-around">
                                             <div class="product-img-warp">
-                                                <a href="product-details-default.html" class="product-default-img-link">
-                                                    <img src="@item.Pictures?.FirstOrDefault(p=>p.Name == "800")?.Path" alt="" class="product-default-img img-fluid">
+                                                <a href="@Url.Action("ShowProduct","Shopping",item)" class="product-default-img-link">
+                                                    <img src="@item.Pictures.First().Path" alt="" class="product-default-img img-fluid">
                                                 </a>
                                                 <div class="product-action-icon-link">
                                                     <ul>
-                                                        <li><a href="#" data-toggle="modal" data-target="#modalQuickview"><i class="icon-eye"></i></a></li>
-                                                        <li><a href="#" data-toggle="modal" data-target="#modalAddcart"><i class="icon-shopping-cart"></i></a></li>
+                                                        <li><a href="@Url.Action("ShowProduct","Shopping",item)"><i class="icon-eye"></i></a></li>
+                                                        <li><a href="@Url.Action("AddToBasket","Shopping",new AddToBasketVM {  CategoryId = (int)item.CategoryId, ProductId = item.Id})"><i class="icon-shopping-cart"></i></a></li>
                                                     </ul>
                                                 </div>
                                             </div>
                                             <div class="product-default-content">
-                                                <h6 class="product-default-link"><a href="product-details-default.html">@item.Name</a></h6>
+                                                <h6 class="product-default-link"><a href="@Url.Action("ShowProduct","Shopping",item)">@item.Name</a></h6>
                                                 <span class="product-default-price"> @item.Price ₽</span>
                                             </div>
                                         </div>

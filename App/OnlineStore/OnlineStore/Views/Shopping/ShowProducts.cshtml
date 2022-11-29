@@ -25,7 +25,7 @@
                 <div class="siderbar-section">
 
                     <div class="sidebar-single-widget">
-                        <h6 class="sidebar-title">Фильтер</h6>
+                        <h6 class="sidebar-title">Фильтр</h6>
                         <div class="sidebar-content">
                             <div id="slider-range"></div>
                             <div class="filter-type-price">
@@ -67,7 +67,7 @@
 
                                                         <div class="product-default-single border-around">
                                                             <div class="product-img-warp">
-                                                                <a href="product-details-default.html"
+                                                                <a href="@Url.Action("ShowProduct","Shopping",item)"
                                                                    class="product-default-img-link">
                                                                     <img src="@item.Pictures.First().Path"
                                                                          alt="" class="product-default-img img-fluid">
@@ -124,3 +124,4 @@
         </div>
     </div>
 
+</div>

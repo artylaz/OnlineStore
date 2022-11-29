@@ -5,6 +5,7 @@ using System.Linq;
 using OnlineStore.Data;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OnlineStore.Controllers
 {
@@ -19,10 +20,25 @@ namespace OnlineStore.Controllers
         [HttpGet]
         public IActionResult ShowProducts(Category category)
         {
-            List<Product> products = new List<Product>();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = int.Parse(User.Claims.First().Value);
+                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+            }
 
-            if (category.CategoryId == null)
+            List<Product> products = new();
+
+            if (category.CategoryId == null && category.Id == 0)
                 products = db.Products.Include(p => p.Pictures).ToList();
+            else if (category.CategoryId == null)
+            {
+                var categories = db.Categories.Where(c => c.CategoryId == category.Id).ToList();
+
+                foreach (var item in categories)
+                {
+                    products.AddRange(db.Products.Where(p => p.CategoryId == item.Id).Include(p => p.Pictures));
+                }
+            }
             else
                 products = db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).ToList();
 
@@ -34,6 +50,12 @@ namespace OnlineStore.Controllers
         [HttpGet]
         public IActionResult ShowProduct(Product product)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = int.Parse(User.Claims.First().Value);
+                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+            }
+
             var characteristics = db.ProductCharacteristics.Where(p => p.ProductId == product.Id)
                 .Include(p => p.Characteristic).Select(p => p.Characteristic).ToList();
 
@@ -51,10 +73,11 @@ namespace OnlineStore.Controllers
 
             return View(productVM);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult AddToBasket(AddToBasketVM addToBasketVM)
         {
+
             var userId = int.Parse(User.Claims.First().Value);
 
             var category = db.Categories.FirstOrDefault(c => c.Id == addToBasketVM.CategoryId);
@@ -68,7 +91,7 @@ namespace OnlineStore.Controllers
             }
             else
             {
-                var basketProduct = db.Baskets.Find(addToBasketVM.ProductId, userId);
+                var basketProduct = db.Baskets.FirstOrDefault(b => b.UserId == userId && b.ProductId == addToBasketVM.ProductId);
 
                 if (basketProduct != null)
                 {
@@ -85,9 +108,14 @@ namespace OnlineStore.Controllers
 
             db.SaveChanges();
 
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+            }
+
             return RedirectToAction("ShowProducts", category);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult ShowBasket()
         {
@@ -96,11 +124,13 @@ namespace OnlineStore.Controllers
             if (int.TryParse(User.Claims.First().Value, out int userId))
             {
                 baskets = db.Baskets.Where(b => b.UserId == userId).Include(b => b.User).Include(b => b.Product).ThenInclude(p => p.Pictures).ToList();
+
+                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
             }
 
             return View(new ShowBasketVM { Baskets = baskets });
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult RemoveBasket(Basket basket)
         {
@@ -108,11 +138,14 @@ namespace OnlineStore.Controllers
             {
                 db.Baskets.Remove(basket);
                 db.SaveChanges();
+
+                var userId = int.Parse(User.Claims.First().Value);
+                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
             }
 
             return RedirectToAction("ShowBasket");
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult BuyProducts(List<Basket> Baskets)
         {
@@ -131,6 +164,9 @@ namespace OnlineStore.Controllers
                 db.Baskets.RemoveRange(Baskets);
 
                 db.SaveChanges();
+
+                var userId = int.Parse(User.Claims.First().Value);
+                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
             }
             return RedirectToAction("ShowBasket");
         }
