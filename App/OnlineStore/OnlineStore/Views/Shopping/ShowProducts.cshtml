@@ -35,7 +35,7 @@
                                 <div id="divPriceFiltrId" class="filter-type-price">
                                     <label for="amount">Цена:</label>
                                     <input type="text" name="priceFiltr" value="@Model.PriceFiltr" id="amount">
-                                    <input type="text" hidden id="priceFiltrIdHiden"  value="@Model.PriceFiltr" >
+                                    <input type="text" hidden id="priceFiltrIdHiden" value="@Model.PriceFiltr">
                                 </div>
                                 <div class="product-add-to-cart-btn">
                                     <button type="submit">Применить</button>
@@ -82,56 +82,30 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="shop-sort-section">
                         <div class="container">
                             <div class="row">
-                                
+
                                 <div class="sort-box d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column">
-                                    
+
                                     <div class="sort-tablist">
                                         <ul class="tablist nav sort-tab-btn">
                                             <li></li>
                                             <li></li>
                                         </ul>
-                                    </div> 
+                                    </div>
 
                                     <div class="sort-select-list">
                                         <fieldset>
-                                            <select onchange="selectOnchange()" name="sortOrder" id="speed">
-
-
-                                                @if (Model.SortOrder == SortState.NameAsc)
-                                                {
-                                                    <option disabled selected value="@SortState.NameAsc">Сортировка по имени: по возрастанию</option>
-                                                    <option value="@SortState.NameDesc">Сортировка по цене: по убыванию</option>
-                                                    <option value="@SortState.PriceAsc">Сортировка по цене: от низкой до высокой</option>
-                                                    <option value="@SortState.PriceDesc">Сортировка по цене: от высокой до низкой</option>
-                                                }
-                                                else if (Model.SortOrder == SortState.NameAsc)
-                                                {
-                                                    <option value="@SortState.NameDesc">Сортировка по имени: по возрастанию</option>
-                                                    <option disabled selected value="@SortState.NameDesc">Сортировка по цене: по убыванию</option>
-                                                    <option value="@SortState.PriceAsc">Сортировка по цене: от низкой до высокой</option>
-                                                    <option value="@SortState.PriceDesc">Сортировка по цене: от высокой до низкой</option>
-                                                }
-                                                else if (Model.SortOrder == SortState.PriceAsc)
-                                                {
-                                                    <option value="@SortState.NameAsc">Сортировка по имени: по возрастанию</option>
-                                                    <option value="@SortState.NameDesc">Сортировка по цене: по убыванию</option>
-                                                    <option disabled selected value="@SortState.PriceAsc">Сортировка по цене: от низкой до высокой</option>
-                                                    <option value="@SortState.PriceDesc">Сортировка по цене: от высокой до низкой</option>
-                                                }
-                                                else if (Model.SortOrder == SortState.PriceDesc)
-                                                {
-                                                    <option value="@SortState.NameAsc">Сортировка по имени: по возрастанию</option>
-                                                    <option value="@SortState.NameDesc">Сортировка по цене: по убыванию</option>
-                                                    <option value="@SortState.PriceAsc">Сортировка по цене: от низкой до высокой</option>
-                                                    <option disabled selected value="@SortState.PriceDesc">Сортировка по цене: от высокой до низкой</option>
-                                                }
+                                            <select onchange="selectOnchange()" asp-for="SortOrder"  id="speed">
+                                                <option  value="@SortState.NameAsc">Сортировка по имени: по возрастанию</option>
+                                                <option value="@SortState.NameDesc">Сортировка по цене: по убыванию</option>
+                                                <option value="@SortState.PriceAsc">Сортировка по цене: от низкой до высокой</option>
+                                                <option value="@SortState.PriceDesc">Сортировка по цене: от высокой до низкой</option>
                                             </select>
                                         </fieldset>
                                     </div>
@@ -214,7 +188,7 @@
     </div>
 </form>
 <script>
-    
+
     var paramsString = document.location.search;
 
     var links = document.getElementById("divLink").getElementsByTagName('a');
