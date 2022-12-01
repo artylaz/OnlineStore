@@ -6,6 +6,7 @@ using OnlineStore.Data;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using OnlineStore.Models.SortPhilPag;
 
 namespace OnlineStore.Controllers
 {
@@ -18,8 +19,10 @@ namespace OnlineStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShowProducts(Category category)
+        public IActionResult ShowProducts(Category category, List<Characteristic> characteristics, SortState sortOrder = SortState.NameAsc, int page = 1)
         {
+            category = db.Categories.FirstOrDefault(c => c.Id == category.Id);
+
             if (User.Identity.IsAuthenticated)
             {
                 var userId = int.Parse(User.Claims.First().Value);
@@ -28,24 +31,89 @@ namespace OnlineStore.Controllers
 
             List<Product> products = new();
 
-            if (category.CategoryId == null && category.Id == 0)
-                products = db.Products.Include(p => p.Pictures).ToList();
+            if (category == null || category.CategoryId == null && category.Id == 0)
+                products = db.Products.Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToList();
             else if (category.CategoryId == null)
             {
                 var categories = db.Categories.Where(c => c.CategoryId == category.Id).ToList();
 
                 foreach (var item in categories)
                 {
-                    products.AddRange(db.Products.Where(p => p.CategoryId == item.Id).Include(p => p.Pictures));
+                    products.AddRange(db.Products.Where(p => p.CategoryId == item.Id).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic));
                 }
             }
             else
-                products = db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).ToList();
+                products = db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToList();
 
-            var showProductsVM = new ShowProductsVM { Products = products, Category = category };
+            var showProductsVM = new ShowProductsVM();
+
+            //Фильтрация
+            var productsF = new List<Product>();
+            if (characteristics == null || characteristics.Count() == 0)
+                productsF = products;
+            else
+                foreach (var item in characteristics)
+                {
+                    productsF.AddRange(products.Where(p => p.ProductCharacteristics.Any(ph => ph.CharacteristicId == item.Id) == true));
+                }
+
+            //Сортировка
+            productsF = sortOrder switch
+            {
+                SortState.NameAsc => productsF.OrderBy(s => s.Name).ToList(),
+                SortState.NameDesc => productsF.OrderByDescending(s => s.Name).ToList(),
+                SortState.PriceAsc => productsF.OrderBy(s => s.Price).ToList(),
+                SortState.PriceDesc => productsF.OrderByDescending(s => s.Price).ToList(),
+                _ => productsF.OrderBy(s => s.Name).ToList(),
+            };
+
+            showProductsVM.CoutProduct = productsF.Count;
+
+            //Пагинация
+            int pageSize = 9;
+            var count = productsF.Count;
+            productsF = productsF.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            showProductsVM.Products = productsF;
+            showProductsVM.Category = category;
+            showProductsVM.CheckedCharacteristics = characteristics;
+            showProductsVM.Characteristics = db.Characteristics.ToList();
+            showProductsVM.SortOrder = sortOrder;
+            showProductsVM.PageVM = new PageViewModel(count, page, pageSize);
+
 
             return View(showProductsVM);
         }
+
+        //[HttpPost]
+        //public IActionResult ShowProducts()
+        //{
+        //    if (User.Identity.IsAuthenticated)
+        //    {
+        //        var userId = int.Parse(User.Claims.First().Value);
+        //        ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+        //    }
+
+        //    List<Product> products = new();
+
+        //    if (category.CategoryId == null && category.Id == 0)
+        //        products = db.Products.Include(p => p.Pictures).ToList();
+        //    else if (category.CategoryId == null)
+        //    {
+        //        var categories = db.Categories.Where(c => c.CategoryId == category.Id).ToList();
+
+        //        foreach (var item in categories)
+        //        {
+        //            products.AddRange(db.Products.Where(p => p.CategoryId == item.Id).Include(p => p.Pictures));
+        //        }
+        //    }
+        //    else
+        //        products = db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).ToList();
+
+        //    var showProductsVM = new ShowProductsVM { Products = products, Category = category };
+
+        //    return View(showProductsVM);
+        //}
 
         [HttpGet]
         public IActionResult ShowProduct(Product product)
@@ -83,6 +151,7 @@ namespace OnlineStore.Controllers
             var category = db.Categories.FirstOrDefault(c => c.Id == addToBasketVM.CategoryId);
 
             var basket = db.Baskets.FirstOrDefault(c => c.UserId == userId);
+
 
             if (basket == null)
             {

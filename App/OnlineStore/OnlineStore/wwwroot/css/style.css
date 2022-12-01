@@ -14433,15 +14433,16 @@ Components - Form
 .default-form-box input[type=password],
 .default-form-box input[type=number],
 .default-form-box input[type=date],
+.default-form-box input[type=tel],
 .default-form-box textarea {
-  border: 1px solid #eee;
-  border-radius: 3px;
-  background: none;
-  height: 40px;
-  width: 100%;
-  padding: 0 20px;
-  color: #666;
-  outline: none;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background: none;
+    height: 40px;
+    width: 100%;
+    padding: 0 20px;
+    color: #666;
+    outline: none;
 }
 .default-form-box input[type=text]::placeholder,
 .default-form-box input[type=email]::placeholder,
@@ -14669,7 +14670,7 @@ Components - Sidebar Widget
   display: inline-block;
 }
 .filter-type-price input {
-  width: 100px;
+  width: 150px;
   display: inline-block;
   text-align: right;
 }
@@ -16090,6 +16091,38 @@ Pages - Product Details
 }
 .product-add-to-cart-btn a:hover {
   background: #666;
+}
+
+.product-add-to-cart-btn button {
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 20px;
+    background: #ea1c26;
+    height: 42px;
+    line-height: 42px;
+    text-transform: capitalize;
+    min-width: 200px;
+    text-align: center;
+    color: #FFF;
+    border-radius: 3px;
+    margin-top: 7px;
+    font-weight: 500;
+}
+
+@media (min-width: 768px) {
+    .product-add-to-cart-btn button {
+        min-width: 200px;
+    }
+}
+
+@media (min-width: 992px) {
+    .product-add-to-cart-btn button {
+        min-width: 270px;
+    }
+}
+
+.product-add-to-cart-btn button:hover {
+    background: #666;
 }
 
 /* Variable - Color*/

@@ -357,11 +357,11 @@
         max: 10000,
         values: [1000, 3000],
         slide: function (event, ui) {
-            $("#amount").val("P" + ui.values[0] + " - P" + ui.values[1]);
+            $("#amount").val(ui.values[0] + " P" + " - " + ui.values[1] + " P");
         }
     });
-    $("#amount").val("P" + $("#slider-range").slider("values", 0) +
-        " - P" + $("#slider-range").slider("values", 1));
+    $("#amount").val($("#slider-range").slider("values", 0) + " P" +
+        " - " + $("#slider-range").slider("values", 1) +" P");
 
 
     /************************************************

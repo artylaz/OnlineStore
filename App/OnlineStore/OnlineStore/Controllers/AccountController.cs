@@ -35,7 +35,7 @@ namespace OnlineStore.Controllers
                 if (user == null)
                 {
                     // добавляем пользователя в бд
-                    user = new User { Email = model.Email, LastName = model.LastName, Phone = model.Phone, FirstName = model.FirstName, Password = model.Password };
+                    user = new User { Email = model.Email, RegistrationDate = DateTime.Now, LastName = model.LastName, Phone = model.Phone, FirstName = model.FirstName, Password = model.Password };
                     Role userRole = await db.Roles.FirstOrDefaultAsync(r => r.Name == "user");
                     if (userRole != null)
                         user.Role = userRole;

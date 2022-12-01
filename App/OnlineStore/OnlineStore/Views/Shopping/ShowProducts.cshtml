@@ -1,127 +1,248 @@
 ﻿@model ShowProductsVM
+@using OnlineStore.Models.SortPhilPag
+@{int a = 0; }
 
-<div class="breadcrumb-section">
-    <div class="breadcrumb-wrapper">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 d-flex justify-content-between justify-content-md-between  align-items-center flex-md-row flex-column">
-                    <h3 class="breadcrumb-title">@Model.Category.Name</h3>
-                    <div class="breadcrumb-nav">
-                        <nav aria-label="breadcrumb">
 
-                        </nav>
+<form method="get" id="FilFormId" asp-action="ShowProducts" asp-controller="Shopping">
+    <div class="breadcrumb-section">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-between justify-content-md-between  align-items-center flex-md-row flex-column">
+                        <h3 class="breadcrumb-title">@Model.Category?.Name</h3>
+                        <div class="breadcrumb-nav">
+                            <nav aria-label="breadcrumb">
+
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="shop-section">
-    <div class="container">
-        <div class="row flex-column-reverse flex-lg-row">
-            <div class="col-lg-3">
+    <div class="shop-section">
+        <div class="container">
+            <div class="row flex-column-reverse flex-lg-row">
+                <div class="col-lg-3">
 
-                <div class="siderbar-section">
+                    <div class="siderbar-section">
 
-                    <div class="sidebar-single-widget">
-                        <h6 class="sidebar-title">Фильтр</h6>
-                        <div class="sidebar-content">
-                            <div id="slider-range"></div>
-                            <div class="filter-type-price">
-                                <label for="amount">Цена:</label>
-                                <input type="text" id="amount">
+                        <div class="sidebar-single-widget">
+                            <h6 class="sidebar-title">Фильтр</h6>
+                            <div class="sidebar-content">
+                                <div id="slider-range"></div>
+                                <div class="filter-type-price">
+                                    <label for="amount">Цена:</label>
+                                    <input type="text" id="amount">
+                                </div>
                             </div>
                         </div>
+                        <div class="sidebar-single-widget">
+                            <h6 class="sidebar-title">Характеристики</h6>
+                            <div class="sidebar-content">
+                                <div class="filter-type-select">
+                                    <ul>
+                                        @for (int i = 0; i < Model.Characteristics.Count; i++)
+                                        {
+                                            @if (@Model.CheckedCharacteristics == null || @Model.CheckedCharacteristics.Count == 0)
+                                            {
+                                                <li>
+                                                    <label class="checkbox-default" for="brakeParts-@i">
+                                                        <input onchange="checkboxOnchange()" name="Characteristics[@i].Id" type="checkbox" value="@Model.Characteristics[i].Id" id="brakeParts-@i">
+                                                        <span>@Model.Characteristics[i].Name</span>
+                                                    </label>
+                                                </li>
+                                            }
+                                            else if (@Model.CheckedCharacteristics.Any(c => c.Id == Model.Characteristics[i].Id))
+                                            {
+                                                <li>
+                                                    <label class="checkbox-default" for="brakeParts-@i">
+                                                        <input onchange="checkboxOnchange()" name="Characteristics[@i].Id" checked type="checkbox" value="@Model.Characteristics[i].Id" id="brakeParts-@i">
+                                                        <span>@Model.Characteristics[i].Name</span>
+                                                    </label>
+                                                </li>
+                                                a++;
+                                            }
+                                            else
+                                            {
+                                                <li>
+                                                    <label class="checkbox-default" for="brakeParts-@i">
+                                                        <input onchange="checkboxOnchange()" name="Characteristics[@i].Id" type="checkbox" value="@Model.Characteristics[i].Id" id="brakeParts-@i">
+                                                        <span>@Model.Characteristics[i].Name</span>
+                                                    </label>
+                                                </li>
+                                            }
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> 
                     </div>
-
-
                 </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="shop-sort-section">
-                    <div class="container">
-                        <div class="row">
-                            <div class="sort-box d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column">
+                <div class="col-lg-9">
+                    <div class="shop-sort-section">
+                        <div class="container">
+                            <div class="row">
+                                
+                                <div class="sort-box d-flex justify-content-between align-items-md-center align-items-start flex-md-row flex-column">
+                                    
+                                    <div class="sort-tablist">
+                                        <ul class="tablist nav sort-tab-btn">
+                                            <li></li>
+                                            <li></li>
+                                        </ul>
+                                    </div> 
 
-                                <div class="page-amount">
-                                    <span>Показано 1-9 из 21 результатов</span>
+                                    <div class="sort-select-list">
+                                        <fieldset>
+                                            <select onchange="selectOnchange()" name="sortOrder" id="speed">
+
+
+                                                @if (Model.SortOrder == SortState.NameAsc)
+                                                {
+                                                    <option disabled selected value="@SortState.NameAsc">Сортировка по имени: по возрастанию</option>
+                                                    <option value="@SortState.NameDesc">Сортировка по цене: по убыванию</option>
+                                                    <option value="@SortState.PriceAsc">Сортировка по цене: от низкой до высокой</option>
+                                                    <option value="@SortState.PriceDesc">Сортировка по цене: от высокой до низкой</option>
+                                                }
+                                                else if (Model.SortOrder == SortState.NameAsc)
+                                                {
+                                                    <option value="@SortState.NameDesc">Сортировка по имени: по возрастанию</option>
+                                                    <option disabled selected value="@SortState.NameDesc">Сортировка по цене: по убыванию</option>
+                                                    <option value="@SortState.PriceAsc">Сортировка по цене: от низкой до высокой</option>
+                                                    <option value="@SortState.PriceDesc">Сортировка по цене: от высокой до низкой</option>
+                                                }
+                                                else if (Model.SortOrder == SortState.PriceAsc)
+                                                {
+                                                    <option value="@SortState.NameAsc">Сортировка по имени: по возрастанию</option>
+                                                    <option value="@SortState.NameDesc">Сортировка по цене: по убыванию</option>
+                                                    <option disabled selected value="@SortState.PriceAsc">Сортировка по цене: от низкой до высокой</option>
+                                                    <option value="@SortState.PriceDesc">Сортировка по цене: от высокой до низкой</option>
+                                                }
+                                                else if (Model.SortOrder == SortState.PriceDesc)
+                                                {
+                                                    <option value="@SortState.NameAsc">Сортировка по имени: по возрастанию</option>
+                                                    <option value="@SortState.NameDesc">Сортировка по цене: по убыванию</option>
+                                                    <option value="@SortState.PriceAsc">Сортировка по цене: от низкой до высокой</option>
+                                                    <option disabled selected value="@SortState.PriceDesc">Сортировка по цене: от высокой до низкой</option>
+                                                }
+                                            </select>
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="page-amount">
+                                        <span>@Model.GetNamPages(Model.PageVM.PageNumber)</span>
+                                    </div>
 
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="sort-product-tab-wrapper">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="tab-content tab-animate-zoom">
+                        <div class="sort-product-tab-wrapper">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="tab-content tab-animate-zoom">
 
-                                        <div class="tab-pane active show sort-layout-single" id="layout-3-grid">
-                                            <div class="row">
-                                                @foreach (var item in Model.Products)
-                                                {
-                                                    <div class="col-xl-4 col-sm-6 col-12">
+                                            <div class="tab-pane active show sort-layout-single" id="layout-3-grid">
+                                                <div class="row">
+                                                    @foreach (var item in Model.Products)
+                                                    {
+                                                        <div class="col-xl-4 col-sm-6 col-12">
 
 
-                                                        <div class="product-default-single border-around">
-                                                            <div class="product-img-warp">
-                                                                <a href="@Url.Action("ShowProduct","Shopping",item)"
-                                                                   class="product-default-img-link">
-                                                                    <img src="@item.Pictures.First().Path"
-                                                                         alt="" class="product-default-img img-fluid">
-                                                                </a>
-                                                                <div class="product-action-icon-link">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <a href="@Url.Action("ShowProduct","Shopping",item)">
-                                                                                <i class="icon-eye"></i>
-                                                                            </a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <a href="@Url.Action("AddToBasket","Shopping",new AddToBasketVM {  CategoryId = Model.Category.Id, ProductId = item.Id})">
-                                                                                <i class="icon-shopping-cart"></i>
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
+                                                            <div class="product-default-single border-around">
+                                                                <div class="product-img-warp">
+                                                                    <a href="@Url.Action("ShowProduct","Shopping",item)"
+                                                                       class="product-default-img-link">
+                                                                        <img src="@item.Pictures.First().Path"
+                                                                             alt="" class="product-default-img img-fluid">
+                                                                    </a>
+                                                                    <div class="product-action-icon-link">
+                                                                        <ul>
+                                                                            <li>
+                                                                                <a href="@Url.Action("ShowProduct","Shopping",item)">
+                                                                                    <i class="icon-eye"></i>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="@Url.Action("AddToBasket","Shopping",new AddToBasketVM {  CategoryId = Model.Category!=null ? Model.Category.Id:0, ProductId = item.Id})">
+                                                                                    <i class="icon-shopping-cart"></i>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="product-default-content">
+                                                                    <h6 class="product-default-link">
+                                                                        <a href="@Url.Action("ShowProduct","Shopping",item)">
+                                                                            @item.Name
+                                                                        </a>
+                                                                    </h6>
+                                                                    <span class="product-default-price">
+                                                                        @item.Price ₽
+                                                                    </span>
                                                                 </div>
                                                             </div>
-                                                            <div class="product-default-content">
-                                                                <h6 class="product-default-link">
-                                                                    <a href="@Url.Action("ShowProduct","Shopping",item)">
-                                                                        @item.Name
-                                                                    </a>
-                                                                </h6>
-                                                                <span class="product-default-price">
-                                                                    @item.Price ₽
-                                                                </span>
-                                                            </div>
-                                                        </div>
 
-                                                    </div>
-                                                }
+                                                        </div>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="page-pagination text-center">
-                        <ul>
-                            <li><a href="#">Назад</a></li>
-                            <li><a class="active" href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">Далее</a></li>
-                        </ul>
-                    </div>
+                        <div id="divLink" class="page-pagination text-center">
+                            <page-link page-model="Model.PageVM"
+                                       page-action="ShowProducts"></page-link>
+                        </div>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
+</form>
+<script>
+    var paramsString = document.location.search;
+
+    var links = document.getElementById("divLink").getElementsByTagName('a');
+    let arr = [];
+
+    for (i = 0; i < links.length; i++) {
+        if (links[i].className == "active") {
+
+        }
+        else {
+            arr.push(links[i]);
+        }
+    }
+
+    for (i = 0; i < arr.length; i++) {
+        arr[i].href += "&" + paramsString.substr(1);
+    }
+
+    function selectOnchange() {
+        let checkboxes = document.querySelectorAll('input:checked');
+        for (i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].name = "Characteristics[" + i + "].Id"
+        }
+        document.getElementById("FilFormId").submit();
+    }
+
+    function checkboxOnchange() {
+
+        let checkboxes = document.querySelectorAll('input:checked');
+        for (i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].name = "Characteristics[" + i + "].Id"
+        }
+
+        document.getElementById("FilFormId").submit();
+    }
+</script>
