@@ -32,9 +32,13 @@
                             <h6 class="sidebar-title">Фильтр</h6>
                             <div class="sidebar-content">
                                 <div id="slider-range"></div>
-                                <div class="filter-type-price">
+                                <div id="divPriceFiltrId" class="filter-type-price">
                                     <label for="amount">Цена:</label>
-                                    <input type="text" id="amount">
+                                    <input type="text" name="priceFiltr" value="@Model.PriceFiltr" id="amount">
+                                    <input type="text" hidden id="priceFiltrIdHiden"  value="@Model.PriceFiltr" >
+                                </div>
+                                <div class="product-add-to-cart-btn">
+                                    <button type="submit">Применить</button>
                                 </div>
                             </div>
                         </div>
@@ -210,6 +214,7 @@
     </div>
 </form>
 <script>
+    
     var paramsString = document.location.search;
 
     var links = document.getElementById("divLink").getElementsByTagName('a');

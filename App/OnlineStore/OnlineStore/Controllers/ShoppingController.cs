@@ -19,8 +19,12 @@ namespace OnlineStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShowProducts(Category category, List<Characteristic> characteristics, SortState sortOrder = SortState.NameAsc, int page = 1)
+        public IActionResult ShowProducts(Category category,  List<Characteristic> characteristics, string priceFiltr = "1000 P - 3000 P", SortState sortOrder = SortState.NameAsc, int page = 1)
         {
+            string[] stringArr = new string[6];
+            if (priceFiltr != null)
+                stringArr = priceFiltr.Split(new char[] { ' ' });
+
             category = db.Categories.FirstOrDefault(c => c.Id == category.Id);
 
             if (User.Identity.IsAuthenticated)
@@ -57,6 +61,9 @@ namespace OnlineStore.Controllers
                     productsF.AddRange(products.Where(p => p.ProductCharacteristics.Any(ph => ph.CharacteristicId == item.Id) == true));
                 }
 
+            if (stringArr[0] != null && stringArr[3] != null)
+                productsF = productsF.Where(p => p.Price >= int.Parse(stringArr[0]) && p.Price <= int.Parse(stringArr[3])).ToList();
+
             //Сортировка
             productsF = sortOrder switch
             {
@@ -80,6 +87,7 @@ namespace OnlineStore.Controllers
             showProductsVM.Characteristics = db.Characteristics.ToList();
             showProductsVM.SortOrder = sortOrder;
             showProductsVM.PageVM = new PageViewModel(count, page, pageSize);
+            showProductsVM.PriceFiltr = stringArr[0] + " P - " + stringArr[3] + " P";
 
 
             return View(showProductsVM);

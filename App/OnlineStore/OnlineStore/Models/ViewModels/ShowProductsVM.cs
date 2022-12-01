@@ -14,6 +14,7 @@ namespace OnlineStore.Models.ViewModels
         public Category Category { get; set; }
         public List<Characteristic> Characteristics { get; set; }
         public List<Characteristic> CheckedCharacteristics { get; set; }
+        public string PriceFiltr { get; set; }
         public SortState SortOrder { get; set; }
         public PageViewModel PageVM { get; set; }
         public SortViewModel SortViewModel { get; set; }
