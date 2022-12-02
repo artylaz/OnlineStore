@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineStore.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using OnlineStore.Models.SortPhilPag;
+using System.Threading.Tasks;
 
 namespace OnlineStore.Controllers
 {
@@ -19,35 +20,36 @@ namespace OnlineStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult ShowProducts(Category category,  List<Characteristic> characteristics, string priceFiltr = "1000 P - 3000 P", SortState sortOrder = SortState.NameAsc, int page = 1)
+        public async Task<IActionResult> ShowProducts(Category category, List<Characteristic> characteristics, string priceFiltr = "1000 P - 3000 P", SortState sortOrder = SortState.NameAsc, int page = 1)
         {
             string[] stringArr = new string[6];
             if (priceFiltr != null)
                 stringArr = priceFiltr.Split(new char[] { ' ' });
 
-            category = db.Categories.FirstOrDefault(c => c.Id == category.Id);
+            category = await db.Categories.FirstOrDefaultAsync(c => c.Id == category.Id);
 
             if (User.Identity.IsAuthenticated)
             {
                 var userId = int.Parse(User.Claims.First().Value);
-                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+                ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             }
 
             List<Product> products = new();
 
             if (category == null || category.CategoryId == null && category.Id == 0)
-                products = db.Products.Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToList();
+                products = await db.Products.Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToListAsync();
             else if (category.CategoryId == null)
             {
-                var categories = db.Categories.Where(c => c.CategoryId == category.Id).ToList();
+                var categories = await db.Categories.Where(c => c.CategoryId == category.Id).ToListAsync();
 
                 foreach (var item in categories)
                 {
-                    products.AddRange(db.Products.Where(p => p.CategoryId == item.Id).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic));
+                    var categoriesList = await db.Products.Where(p => p.CategoryId == item.Id).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToListAsync();
+                    products.AddRange(categoriesList);
                 }
             }
             else
-                products = db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToList();
+                products = await db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToListAsync();
 
             var showProductsVM = new ShowProductsVM();
 
@@ -93,47 +95,17 @@ namespace OnlineStore.Controllers
             return View(showProductsVM);
         }
 
-        //[HttpPost]
-        //public IActionResult ShowProducts()
-        //{
-        //    if (User.Identity.IsAuthenticated)
-        //    {
-        //        var userId = int.Parse(User.Claims.First().Value);
-        //        ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
-        //    }
-
-        //    List<Product> products = new();
-
-        //    if (category.CategoryId == null && category.Id == 0)
-        //        products = db.Products.Include(p => p.Pictures).ToList();
-        //    else if (category.CategoryId == null)
-        //    {
-        //        var categories = db.Categories.Where(c => c.CategoryId == category.Id).ToList();
-
-        //        foreach (var item in categories)
-        //        {
-        //            products.AddRange(db.Products.Where(p => p.CategoryId == item.Id).Include(p => p.Pictures));
-        //        }
-        //    }
-        //    else
-        //        products = db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).ToList();
-
-        //    var showProductsVM = new ShowProductsVM { Products = products, Category = category };
-
-        //    return View(showProductsVM);
-        //}
-
         [HttpGet]
-        public IActionResult ShowProduct(Product product)
+        public async Task<IActionResult> ShowProduct(Product product)
         {
             if (User.Identity.IsAuthenticated)
             {
                 var userId = int.Parse(User.Claims.First().Value);
-                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+                ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             }
 
-            var characteristics = db.ProductCharacteristics.Where(p => p.ProductId == product.Id)
-                .Include(p => p.Characteristic).Select(p => p.Characteristic).ToList();
+            var characteristics = await db.ProductCharacteristics.Where(p => p.ProductId == product.Id)
+                .Include(p => p.Characteristic).Select(p => p.Characteristic).ToListAsync();
 
             var productVM = new ShowProductVM
             {
@@ -141,7 +113,7 @@ namespace OnlineStore.Controllers
                 Name = product.Name,
                 CategoryId = product.CategoryId,
                 Characteristics = characteristics,
-                Pictures = db.Pictures.Where(p => p.ProductId == product.Id).ToList(),
+                Pictures = await db.Pictures.Where(p => p.ProductId == product.Id).ToListAsync(),
                 Category = product.Category,
                 Price = product.Price,
                 Rating = product.Rating
@@ -151,24 +123,24 @@ namespace OnlineStore.Controllers
         }
         [Authorize]
         [HttpGet]
-        public IActionResult AddToBasket(AddToBasketVM addToBasketVM)
+        public async Task<IActionResult> AddToBasket(AddToBasketVM addToBasketVM)
         {
 
             var userId = int.Parse(User.Claims.First().Value);
 
-            var category = db.Categories.FirstOrDefault(c => c.Id == addToBasketVM.CategoryId);
+            var category = await db.Categories.FirstOrDefaultAsync(c => c.Id == addToBasketVM.CategoryId);
 
-            var basket = db.Baskets.FirstOrDefault(c => c.UserId == userId);
+            var basket = await db.Baskets.FirstOrDefaultAsync(c => c.UserId == userId);
 
 
             if (basket == null)
             {
                 basket = new Basket { UserId = userId, ProductId = addToBasketVM.ProductId, AmountProduct = addToBasketVM.AmountProduct };
-                db.Baskets.Add(basket);
+                await db.Baskets.AddAsync(basket);
             }
             else
             {
-                var basketProduct = db.Baskets.FirstOrDefault(b => b.UserId == userId && b.ProductId == addToBasketVM.ProductId);
+                var basketProduct = await db.Baskets.FirstOrDefaultAsync(b => b.UserId == userId && b.ProductId == addToBasketVM.ProductId);
 
                 if (basketProduct != null)
                 {
@@ -178,59 +150,59 @@ namespace OnlineStore.Controllers
                 else
                 {
                     basketProduct = new Basket { AmountProduct = addToBasketVM.AmountProduct, ProductId = addToBasketVM.ProductId, UserId = userId };
-                    db.Baskets.Add(basketProduct);
+                    await db.Baskets.AddAsync(basketProduct);
                 }
 
             }
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             if (User.Identity.IsAuthenticated)
             {
-                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+                ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             }
 
             return RedirectToAction("ShowProducts", category);
         }
         [Authorize]
         [HttpGet]
-        public IActionResult ShowBasket()
+        public async Task<IActionResult> ShowBasket()
         {
             List<Basket> baskets = new();
 
             if (int.TryParse(User.Claims.First().Value, out int userId))
             {
-                baskets = db.Baskets.Where(b => b.UserId == userId).Include(b => b.User).Include(b => b.Product).ThenInclude(p => p.Pictures).ToList();
+                baskets = await db.Baskets.Where(b => b.UserId == userId).Include(b => b.User).Include(b => b.Product).ThenInclude(p => p.Pictures).ToListAsync();
 
-                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+                ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             }
 
             return View(new ShowBasketVM { Baskets = baskets });
         }
         [Authorize]
         [HttpGet]
-        public IActionResult RemoveBasket(Basket basket)
+        public async Task<IActionResult> RemoveBasket(Basket basket)
         {
             if (basket != null)
             {
                 db.Baskets.Remove(basket);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 var userId = int.Parse(User.Claims.First().Value);
-                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+                ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             }
 
             return RedirectToAction("ShowBasket");
         }
         [Authorize]
         [HttpGet]
-        public IActionResult BuyProducts(List<Basket> Baskets)
+        public async Task<IActionResult> BuyProducts(List<Basket> Baskets)
         {
             if (Baskets.Count > 0)
             {
                 foreach (var item in Baskets)
                 {
-                    db.PurchaseHistories.Add(new PurchaseHistory
+                    await db.PurchaseHistories.AddAsync(new PurchaseHistory
                     {
                         AmountProduct = (int)item.AmountProduct,
                         ProductId = item.ProductId,
@@ -240,10 +212,10 @@ namespace OnlineStore.Controllers
                 }
                 db.Baskets.RemoveRange(Baskets);
 
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 var userId = int.Parse(User.Claims.First().Value);
-                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+                ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             }
             return RedirectToAction("ShowBasket");
         }

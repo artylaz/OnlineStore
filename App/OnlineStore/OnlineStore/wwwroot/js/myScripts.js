@@ -29,5 +29,30 @@ function Oninput() {
     })
 };
 
+function Edit(el) {
+    
+
+    var inputs = document.getElementById(el.parentNode.parentNode.getAttribute('id')).getElementsByTagName("input");
+    
+    var selects = document.getElementById(el.parentNode.parentNode.getAttribute('id')).getElementsByTagName("select");
+
+    for (var item of inputs) {
+        item.removeAttribute("readonly");
+        if (item.id == "save") {
+            item.style.display = "flex"
+        }
+
+        
+    }
+
+    for (var item of selects) {
+        item.removeAttribute("disabled");
+    }
+
+    el.style.display = "none";
+
+}
+
+
 
 

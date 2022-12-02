@@ -4,7 +4,6 @@ using OnlineStore.Data;
 using OnlineStore.Models.StaticModels;
 using OnlineStore.Models.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,16 +21,16 @@ namespace OnlineStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
             {
                 var userId = int.Parse(User.Claims.First().Value);
-                ViewData["AmountBasket"] = db.Baskets.Where(b => b.UserId == userId).Count();
+                ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             }
 
-            var latestProducts = db.Products
-                .Skip(Math.Max(0, db.Products.Count() - 10)).Include(p => p.Pictures).ToList();
+            var latestProducts = await db.Products
+                .Skip(Math.Max(0, db.Products.Count() - 10)).Include(p => p.Pictures).ToListAsync();
 
             return View(new IndexVM { Products = latestProducts });
         }

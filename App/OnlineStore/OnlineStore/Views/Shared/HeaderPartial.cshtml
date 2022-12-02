@@ -57,9 +57,25 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/User/MyAccount" style="box-sizing: content-box; ">
-                                        @User.Claims.Last().Value
-                                    </a>
+                                    @if (User.IsInRole("user"))
+                                    {
+                                        <a href="/User/MyAccount" style="box-sizing: content-box; ">
+                                            @User.Claims.Last().Value
+                                        </a>
+                                    }
+                                    else if (User.IsInRole("admin"))
+                                    {
+                                        <a href="/Admin/AdminAccount" style="box-sizing: content-box; ">
+                                            @User.Claims.Last().Value
+                                        </a>
+                                    }
+                                    else if (User.IsInRole("superuser"))
+                                    {
+
+                                    }
+                                    else { }
+
+
                                 </li>
                                 <li>
                                     <a href="#" id="yourLinkId">

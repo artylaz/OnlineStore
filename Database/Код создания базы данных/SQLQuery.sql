@@ -486,3 +486,16 @@ IF (@New_DatePurchase <> @Old_DatePurchase)
 
 
 GO
+
+ALTER TABLE Products
+ADD OnSale BIT NOT NULL DEFAULT 1 CHECK(OnSale>=0 AND OnSale<=1);
+
+ALTER TABLE Products
+ADD Description NVARCHAR(1000) NULL ;
+
+UPDATE Products
+SET Description = 'Нет описания'
+
+ALTER TABLE Categories
+ADD OnSale BIT NOT NULL DEFAULT 1 CHECK(OnSale>=0 AND OnSale<=1);
+

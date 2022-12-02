@@ -1,0 +1,28 @@
+﻿.table-input-text {
+    outline: none;
+    border: none;
+    width: 100%;
+    overflow: auto;
+    background: transparent;
+}
+
+.select-f {
+    background: none;
+    border: none;
+}
+
+.btn-tb {
+    background: #ea1c26;
+    border: 0;
+    color: #FFF;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    height: 34px;
+    line-height: 24px;
+    padding: 5px 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 20px;
+}
