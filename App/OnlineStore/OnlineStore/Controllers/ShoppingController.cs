@@ -26,7 +26,7 @@ namespace OnlineStore.Controllers
             if (priceFiltr != null)
                 stringArr = priceFiltr.Split(new char[] { ' ' });
 
-            category = await db.Categories.FirstOrDefaultAsync(c => c.Id == category.Id);
+            category = await db.Categories.Where(c=>c.OnSale == true).FirstOrDefaultAsync(c => c.Id == category.Id);
 
             if (User.Identity.IsAuthenticated)
             {
@@ -37,19 +37,19 @@ namespace OnlineStore.Controllers
             List<Product> products = new();
 
             if (category == null || category.CategoryId == null && category.Id == 0)
-                products = await db.Products.Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToListAsync();
+                products = await db.Products.Where(p => p.OnSale == true).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToListAsync();
             else if (category.CategoryId == null)
             {
-                var categories = await db.Categories.Where(c => c.CategoryId == category.Id).ToListAsync();
+                var categories = await db.Categories.Where(c => c.CategoryId == category.Id && c.OnSale == true).ToListAsync();
 
                 foreach (var item in categories)
                 {
-                    var categoriesList = await db.Products.Where(p => p.CategoryId == item.Id).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToListAsync();
+                    var categoriesList = await db.Products.Where(p => p.CategoryId == item.Id && p.OnSale==true).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToListAsync();
                     products.AddRange(categoriesList);
                 }
             }
             else
-                products = await db.Products.Where(p => p.CategoryId == category.Id).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToListAsync();
+                products = await db.Products.Where(p => p.CategoryId == category.Id && p.OnSale == true).Include(p => p.Pictures).Include(p => p.ProductCharacteristics).ThenInclude(p => p.Characteristic).ToListAsync();
 
             var showProductsVM = new ShowProductsVM();
 
@@ -128,7 +128,7 @@ namespace OnlineStore.Controllers
 
             var userId = int.Parse(User.Claims.First().Value);
 
-            var category = await db.Categories.FirstOrDefaultAsync(c => c.Id == addToBasketVM.CategoryId);
+            var category = await db.Categories.Where(c => c.OnSale == true).FirstOrDefaultAsync(c => c.Id == addToBasketVM.CategoryId);
 
             var basket = await db.Baskets.FirstOrDefaultAsync(c => c.UserId == userId);
 

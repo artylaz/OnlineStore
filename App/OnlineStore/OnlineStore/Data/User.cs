@@ -21,6 +21,7 @@ namespace OnlineStore.Data
         public string Phone { get; set; }
         public DateTime RegistrationDate { get; set; }
         public int? RoleId { get; set; }
+        public bool? OnSale { get; set; }
 
         public virtual Role Role { get; set; }
         public virtual ICollection<Basket> Baskets { get; set; }

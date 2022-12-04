@@ -72,7 +72,7 @@
                                             {
                                                 <li>
                                                     <label class="checkbox-default" for="brakeParts-@i">
-                                                        <input onchange="checkboxOnchange()" name="Characteristics[@i].Id" type="checkbox" value="@Model.Characteristics[i].Id" id="brakeParts-@i">
+                                                        <input onchange="checkboxOnchange()" name="product.Characteristics[@i].Id" type="checkbox" value="@Model.Characteristics[i].Id" id="brakeParts-@i">
                                                         <span>@Model.Characteristics[i].Name</span>
                                                     </label>
                                                 </li>
@@ -135,7 +135,7 @@
                                                                 <div class="product-img-warp">
                                                                     <a href="@Url.Action("ShowProduct","Shopping",item)"
                                                                        class="product-default-img-link">
-                                                                        <img src="@item.Pictures.First().Path"
+                                                                        <img src="@item.Pictures?.FirstOrDefault()?.Path"
                                                                              alt="" class="product-default-img img-fluid">
                                                                     </a>
                                                                     <div class="product-action-icon-link">

@@ -54,6 +54,10 @@ namespace OnlineStore.Data
                     .IsRequired()
                     .HasMaxLength(40);
 
+                entity.Property(e => e.OnSale)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.HasOne(d => d.CategoryNavigation)
                     .WithMany(p => p.InverseCategoryNavigation)
                     .HasForeignKey(d => d.CategoryId)
@@ -113,9 +117,17 @@ namespace OnlineStore.Data
 
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.Property(e => e.Description)
+                    .HasMaxLength(1000)
+                    .HasDefaultValueSql("('Нет описания')");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(40);
+
+                entity.Property(e => e.OnSale)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
 
@@ -188,6 +200,10 @@ namespace OnlineStore.Data
                 entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasMaxLength(20);
+
+                entity.Property(e => e.OnSale)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Password)
                     .IsRequired()

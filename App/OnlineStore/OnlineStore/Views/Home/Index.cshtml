@@ -60,7 +60,7 @@
                                         <div class="product-default-single border-around">
                                             <div class="product-img-warp">
                                                 <a href="@Url.Action("ShowProduct","Shopping",item)" class="product-default-img-link">
-                                                    <img src="@item.Pictures.First().Path" alt="" class="product-default-img img-fluid">
+                                                    <img src="@item.Pictures?.FirstOrDefault()?.Path" alt="" class="product-default-img img-fluid">
                                                 </a>
                                                 <div class="product-action-icon-link">
                                                     <ul>

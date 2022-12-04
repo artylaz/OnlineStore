@@ -68,7 +68,7 @@ namespace OnlineStore.Controllers
                 User user = await db.Users
                     .Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-                if (user != null)
+                if (user != null && user.OnSale != false)
                 {
                     await Authenticate(user);
 

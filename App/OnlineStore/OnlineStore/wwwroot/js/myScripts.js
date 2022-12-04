@@ -31,28 +31,71 @@ function Oninput() {
 
 function Edit(el) {
     
-
-    var inputs = document.getElementById(el.parentNode.parentNode.getAttribute('id')).getElementsByTagName("input");
+    var id = el.parentNode.parentNode.getAttribute('id');
+    var inputs = document.getElementById(id).getElementsByTagName("input");
     
-    var selects = document.getElementById(el.parentNode.parentNode.getAttribute('id')).getElementsByTagName("select");
+    var selects = document.getElementById(id).getElementsByTagName("select");
+
+    var divs = document.getElementById(id).getElementsByTagName("div");
 
     for (var item of inputs) {
-        item.removeAttribute("readonly");
-        if (item.id == "save") {
-            item.style.display = "flex"
+        
+        if (item.type == "text" || item.type == "number" || item.type == "date") {
+            item.removeAttribute("readonly");
+        }
+        else if (item.type == "submit"){
+            item.style.display = "block"
+        }
+        else if (item.type == "checkbox") {
+            item.removeAttribute("disabled");
         }
 
-        
     }
 
     for (var item of selects) {
         item.removeAttribute("disabled");
     }
+    for (var item of divs) {
+        item.classList.remove("disabled");
+    }
+
 
     el.style.display = "none";
 
 }
 
+if (document.getElementById("inputliShow").value == "Product") {
+    document.getElementById("productsId").click();
+}
+else if (document.getElementById("inputliShow").value == "Category") {
+    document.getElementById("сategoriesId").click();
+}
+else if (document.getElementById("inputliShow").value == "Characteristic") {
+    document.getElementById("characteristicId").click();
+}
+else if (document.getElementById("inputliShow").value == "MonitorDatabase") {
+    document.getElementById("monitorDatabaseId").click();
+}
+else if (document.getElementById("inputliShow").value == "Picture") {
+    document.getElementById("pictureId").click();
+}
+else if (document.getElementById("inputliShow").value == "PurchaseHistory") {
+    document.getElementById("purchaseHistoryId").click();
+}
+else if (document.getElementById("inputliShow").value == "User") {
+    document.getElementById("userId").click();
+}
+else if (document.getElementById("inputliShow").value == "Role") {
+    document.getElementById("roleId").click();
+}
 
 
+
+function checkboxOnch(el) {
+
+    let checkboxes = el.parentNode.querySelectorAll('input:checked');
+    for (i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].name = "ProductCharacteristics[" + i + "]"
+    }
+}
 

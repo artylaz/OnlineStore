@@ -71,7 +71,9 @@
                                     }
                                     else if (User.IsInRole("superuser"))
                                     {
-
+                                        <a href="/Admin/AdminAccount" style="box-sizing: content-box; ">
+                                            @User.Claims.Last().Value
+                                        </a>
                                     }
                                     else { }
 
@@ -111,17 +113,23 @@
 
                                                 @foreach (var categoryVM in IndexMenuVM.Categorys)
                                                 {
-                                                    <li class="mega-menu-item">
-                                                        <a href="@Url.Action("ShowProducts","Shopping",categoryVM)" class="mega-menu-item-title">@categoryVM.Name</a>
-                                                        <ul class="mega-menu-sub">
-                                                            @foreach (var item in categoryVM.InverseCategoryNavigation)
-                                                            {
-                                                                <li>
-                                                                    <a href="@Url.Action("ShowProducts","Shopping",item)">@item.Name</a>
-                                                                </li>
-                                                            }
-                                                        </ul>
-                                                    </li>
+                                                    @if (categoryVM.OnSale == true)
+                                                    {
+                                                        <li class="mega-menu-item">
+                                                            <a href="@Url.Action("ShowProducts","Shopping",categoryVM)" class="mega-menu-item-title">@categoryVM.Name</a>
+                                                            <ul class="mega-menu-sub">
+                                                                @foreach (var item in categoryVM.InverseCategoryNavigation)
+                                                                {
+                                                                    @if (item.OnSale == true)
+                                                                    {
+                                                                        <li>
+                                                                            <a href="@Url.Action("ShowProducts","Shopping",item)">@item.Name</a>
+                                                                        </li>
+                                                                    }
+                                                                }
+                                                            </ul>
+                                                        </li>
+                                                    }
                                                 }
                                             </ul>
                                             <div class="menu-banner">

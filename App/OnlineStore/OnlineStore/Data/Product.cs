@@ -20,6 +20,8 @@ namespace OnlineStore.Data
         public decimal Price { get; set; }
         public int? Rating { get; set; }
         public int? CategoryId { get; set; }
+        public bool? OnSale { get; set; }
+        public string Description { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual ICollection<Basket> Baskets { get; set; }

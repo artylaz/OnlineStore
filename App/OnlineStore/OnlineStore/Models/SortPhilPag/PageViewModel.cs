@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineStore.Models.SortPhilPag
 {
+    
     public class PageViewModel
     {
         public int PageNumber { get; private set; }
