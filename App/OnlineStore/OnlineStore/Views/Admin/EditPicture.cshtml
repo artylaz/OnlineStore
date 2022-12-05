@@ -1,0 +1,107 @@
+﻿@model EditPictureVM
+@{ 
+    int piI = 1;
+    int piA = 0;
+    Layout = "_LayoutAdmin";
+}
+
+<div class="tab-pane fade show active" id="picture">
+    <h4>Картинки</h4>
+
+    <div class="table_page">
+        <form asp-action="EditPicture" asp-controller="Admin">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Путь</th>
+                        <th>Продукт</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input hidden name="Id" />
+                            <input type="text" autocomplete="off" required class="table-input-text" name="Name">
+                        </td>
+                        <td><input type="text" autocomplete="off" required class="table-input-text" name="Path"></td>
+                        <td>
+                            <select required class="select-f" readonly name="ProductId">
+                                <option class="select-option-f">Нет</option>
+                                @foreach (var product in Model.Products)
+                                {
+                                    <option class="select-option-f" value="@product.Id">@product.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input class="btn-tb" type="submit" value="Добавить" />
+                        </td>
+                    </tr>
+
+            </table>
+        </form>
+    </div>
+
+    <div class="table_page " style="overflow-x: auto;height: 400px;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Название</th>
+                    <th>Путь</th>
+                    <th>Продукт</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Pictures)
+                {
+                    <form asp-action="EditPicture" asp-controller="Admin">
+                    <tr id="trCatId-@piA">
+                        <td>@piI</td>
+                        <td>
+                            <input hidden name="Id" value="@item.Id" />
+                            <input type="text" autocomplete="off" required readonly class="table-input-text" name="Name" value="@item.Name">
+                        </td>
+                        <td><input type="text" autocomplete="off" readonly class="table-input-text" name="Path" value="@item.Path"></td>
+                        <td>
+                            <select required disabled class="select-f" readonly name="ProductId" asp-for="Pictures[piA].ProductId">
+                                @foreach (var products in Model.Products)
+                                {
+                                    <option class="select-option-f" value="@products.Id">@products.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input class="btn-tb" type="button" name="edit" onclick="Edit(this)" value="Редактировать" />
+                            <input class="btn-tb" name="save" type="submit" onclick="Save(this)" style="display: none" value="Сохранить" />
+                        </td>
+                        <td>
+                            <a class="btn-tb" href="@Url.Action("RemovePicture","Admin",item)">Удалить</a>
+                        </td>
+                    </tr>
+                    </form>
+                    piI++;
+                    piA++;
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+    let ulActiveAs = document.getElementById("ulActive").getElementsByTagName("a");
+
+    for (var item of ulActiveAs) {
+        if (item.id == 'picturesId') {
+            item.classList.add("active");
+        }
+    }
+
+</script>

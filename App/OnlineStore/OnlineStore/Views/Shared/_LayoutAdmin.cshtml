@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @await Html.PartialAsync("MetatagsPartial")
+    @await Html.PartialAsync("CssPartial")
+</head>
+<body>
+    <div>
+        @await Html.PartialAsync("HeaderPartial")
+        <div>
+            <form id="formId" method="post" asp-controller="Account" asp-action="Logout">
+            </form>
+            <div class="account_dashboard mt-10">
+                <div class="container" style="max-width: 1800px;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-3 col-lg-3">
+
+                            <div class="dashboard_tab_button">
+                                <ul id="ulActive" role="tablist" class="nav flex-column dashboard-list">
+                                    <li><a href="@Url.Action("AdminAccount","Admin")" id="account-detailsId" class="nav-link">Данные учетной записи</a></li>
+                                    <li> <a href="@Url.Action("AdminShops","Admin")" id="shopsId" class="nav-link">Покупки</a></li>
+
+                                    <hr />
+                                    <li><a href="@Url.Action("EditProduct","Admin")" id="productsId" class="nav-link">Товары</a></li>
+                                    <li><a href="@Url.Action("EditCategory","Admin")" id="categoriesId" class="nav-link">Категории</a></li>
+                                    <li><a href="@Url.Action("EditCharacteristic","Admin")" id="characteristicId" class="nav-link">Характеристики</a></li>
+                                    <li><a href="@Url.Action("EditPicture","Admin")" id="picturesId" class="nav-link">Изображения</a></li>
+                                    @if (User.IsInRole("superuser"))
+                                    {
+                                        <li><a href="@Url.Action("EditPurchaseHistory","Superuser")" id="purchaseHistoryId" class="nav-link">История покупок</a></li>
+                                        <li><a href="@Url.Action("EditUser","Superuser")" id="userId" class="nav-link">Пользователи</a></li>
+                                        <li><a href="@Url.Action("ShowMonitorDatabase","Superuser")" id="monitorDatabaseId" class="nav-link">Изменения в история покупок</a></li>
+                                    }
+                                    <hr />
+                                    <li><a href="#" id="linkId" class="nav-link">Выйти</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9">
+                            <div class="tab-content dashboard_content">
+                                @RenderBody()
+                                <script>
+                                    document.getElementById("linkId").onclick = function () {
+                                        document.getElementById("formId").submit();
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @await Html.PartialAsync("FooterPartial")
+
+        @await Html.PartialAsync("ModalWindowPartial")
+
+    </div>
+    @await Html.PartialAsync("ScriptsPartial")
+</body>
+</html>

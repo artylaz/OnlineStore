@@ -1,0 +1,141 @@
+﻿@model EditUserVM
+@{ 
+    int usI = 1;
+    int usA = 0;
+    Layout = "_LayoutAdmin";
+}
+
+<div class="tab-pane fade show active" id="user">
+    <h4>Пользователи</h4>
+
+    <div class="table_page">
+        <form asp-action="EditUser" asp-controller="Superuser">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Почта</th>
+                        <th>Пароль</th>
+                        <th>Телефон</th>
+                        <th>Дата регистрации</th>
+                        <th>Роль</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" autocomplete="off" required class="table-input-text" name="LastName">
+                        </td>
+                        <td>
+                            <input type="text" autocomplete="off" required class="table-input-text" name="FirstName">
+                        </td>
+                        <td>
+                            <input type="email" autocomplete="off" required class="table-input-text" name="Email">
+                        </td>
+                        <td>
+                            <input type="password" autocomplete="off" required class="table-input-text" name="Password">
+                        </td>
+                        <td>
+                            <input type="tel" autocomplete="off" required class="table-input-text" name="Phone">
+                        </td>
+                        <td><input type="date" autocomplete="off" required class="table-input-text" name="RegistrationDate"></td>
+                        <td>
+                            <select required class="select-f" readonly name="RoleId">
+                                @foreach (var role in Model.Roles)
+                                {
+                                    <option class="select-option-f" value="@role.Id">@role.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input class="btn-tb" type="submit" value="Добавить" />
+                        </td>
+                    </tr>
+
+            </table>
+        </form>
+    </div>
+
+    <div class="table_page " style="overflow-x: auto;height: 400px;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Почта</th>
+                    <th>Пароль</th>
+                    <th>Телефон</th>
+                    <th>Дата регистрации</th>
+                    <th>Роль</th>
+                    <th>Статус</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Users)
+                {
+                    <form asp-action="EditUser" asp-controller="Superuser">
+                    <tr id="trUsrId-@usA">
+                        <td>@usI</td>
+                        <td>
+                            <input hidden name="Id" value="@item.Id" />
+                            <input type="text" autocomplete="off" required readonly class="table-input-text" name="LastName" value="@item.LastName">
+                        </td>
+                        <td>
+                            <input type="text" autocomplete="off" required readonly class="table-input-text" name="FirstName" value="@item.FirstName">
+                        </td>
+                        <td>
+                            <input type="email" autocomplete="off" required readonly class="table-input-text" name="Email" value="@item.Email">
+                        </td>
+                        <td>
+                            <input type="password" autocomplete="off" required readonly class="table-input-text" name="Password" value="@item.Password">
+                        </td>
+                        <td>
+                            <input type="tel" autocomplete="off" required readonly class="table-input-text" name="Phone" value="@item.Phone">
+                        </td>
+                        <td><input type="date" autocomplete="off" required readonly class="table-input-text" name="RegistrationDate" value="@item.RegistrationDate.ToString("yyyy-MM-dd")"></td>
+                        <td>
+                            <select required disabled class="select-f" readonly name="RoleId" asp-for="Users[usA].RoleId">
+                                @foreach (var role in Model.Roles)
+                                {
+                                    <option class="select-option-f" value="@role.Id">@role.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select required disabled class="select-f" readonly name="OnSale" asp-for="Users[usA].OnSale">
+
+                                <option class="select-option-f" value="true">Виден</option>
+                                <option class="select-option-f" value="false">Скрыт</option>
+
+                            </select>
+                        </td>
+                        <td>
+                            <input class="btn-tb" type="button" name="edit" onclick="Edit(this)" value="Редактировать" />
+                            <input class="btn-tb" name="save" type="submit" onclick="Save(this)" style="display: none" value="Сохранить" />
+                        </td>
+                    </tr>
+                    </form>
+                    usI++;
+                    usA++;
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+<script>
+    let ulActiveAs = document.getElementById("ulActive").getElementsByTagName("a");
+
+    for (var item of ulActiveAs) {
+        if (item.id == 'userId') {
+            item.classList.add("active");
+        }
+    }
+
+</script>

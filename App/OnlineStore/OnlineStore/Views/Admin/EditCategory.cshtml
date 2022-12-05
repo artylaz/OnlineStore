@@ -1,0 +1,116 @@
+﻿@model EditCategoryVM
+@{
+    int cI = 1;
+    int cA = 0;
+    Layout = "_LayoutAdmin";
+}
+<div class="tab-pane fade show active" id="categories">
+    <h4>Товары</h4>
+
+    <div class="table_page">
+        <form asp-action="EditCategory" asp-controller="Admin">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Родитель</th>
+                        <th>Статус</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" autocomplete="off" required class="table-input-text input-selected" name="Name">
+                        </td>
+                        <td>
+                            <select required class="select-f" readonly name="CategoryId">
+                                <option class="select-option-f">Нет</option>
+                                @foreach (var category in Model.ParentCategories)
+                                {
+                                    <option class="select-option-f" value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select required class="select-f" readonly name="OnSale">
+
+                                <option class="select-option-f" value="true">Виден</option>
+                                <option class="select-option-f" value="false">Скрыт</option>
+
+                            </select>
+                        </td>
+                        <td>
+                            <input class="btn-tb" type="submit" value="Добавить" />
+                        </td>
+                    </tr>
+            </table>
+        </form>
+    </div>
+
+    <div class="table_page " style="overflow-x: auto;height: 400px;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Название</th>
+                    <th>Родитель</th>
+                    <th>Статус</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Categories)
+                {
+                    <form asp-action="EditCategory" asp-controller="Admin">
+                    <tr id="trCatId-@cA">
+                        <td>@cI</td>
+                        <td>
+                            <input hidden name="Id" value="@item.Id" />
+                            <input type="text" autocomplete="off" required readonly class="table-input-text" name="Name" value="@item.Name">
+                        </td>
+                        <td>
+                            <select required disabled class="select-f" name="CategoryId" asp-for="Categories[cA].CategoryId">
+                                <option class="" value="0">Нет</option>
+                                @foreach (var category in Model.ParentCategories)
+                                {
+                                    <option class="" value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select required disabled class="select-f" readonly name="OnSale" asp-for="Categories[cA].OnSale">
+
+                                <option class="select-option-f" value="@bool.TrueString">Виден</option>
+                                <option class="select-option-f" value="@bool.FalseString">Скрыт</option>
+
+                            </select>
+                        </td>
+
+                        <td>
+                            <input class="btn-tb" type="button" name="edit" onclick="Edit(this)" value="Редактировать" />
+                            <input class="btn-tb" name="save" type="submit" onclick="Save(this)" style="display: none" value="Сохранить" />
+                        </td>
+                    </tr>
+                    </form>
+                    cI++;
+                    cA++;
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        let ulActiveAs = document.getElementById("ulActive").getElementsByTagName("a");
+
+        for (var item of ulActiveAs) {
+            if (item.id == 'categoriesId') {
+                item.classList.add("active");
+            }
+        }
+
+    </script>
+</div>
+

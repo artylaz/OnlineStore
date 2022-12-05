@@ -1,0 +1,162 @@
+﻿@model EditProductVM
+@{ 
+    Layout = "_LayoutAdmin";
+    int prI = 1;
+    int prA = 0;
+
+}
+
+<div class="tab-pane fade show active" id="products">
+    <h4>Товары</h4>
+
+    <div class="table_page">
+        <form asp-action="EditProduct" asp-controller="Admin">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Цена</th>
+                        <th>Рейтинг</th>
+                        <th>Категория</th>
+                        <th>Статус</th>
+                        <th>Описание</th>
+                        <th>Характеристики</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" autocomplete="off" required class="table-input-text input-selected" name="Name">
+                        </td>
+                        <td><input type="number" autocomplete="off" required class="table-input-text" name="Price"></td>
+                        <td><input type="number" autocomplete="off" required class="table-input-text" name="Rating"></td>
+                        <td>
+                            <select required class="select-f" readonly name="CategoryId">
+                                @foreach (var category in Model.ProductCategories)
+                                {
+                                    <option class="select-option-f" value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select required class="select-f" readonly name="OnSale">
+
+                                <option class="select-option-f" value="true">Виден</option>
+                                <option class="select-option-f" value="false">Скрыт</option>
+
+                            </select>
+                        </td>
+                        <td><input type="text" autocomplete="off" class="table-input-text" name="Description"></td>
+                        <td>
+                            <div class="__select">
+                                <div class="__select__content" id="divChec-Add">
+                                    @for (int a = 0; a < Model.Characteristics.Count; a++)
+                                    {
+                                        <input id="singleSelect-i-@a-@prI" class="__select__input" type="checkbox" onchange="checkboxOnch(this)" name="ProductCharacteristics[@prI]" value="@Model.Characteristics[a].Id" />
+                                        <label for="singleSelect-i-@a-@prI" class="__select__label">@Model.Characteristics[a].Name</label>
+
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="btn-tb" id="addInput" type="submit" value="Добавить" />
+                        </td>
+                    </tr>
+            </table>
+        </form>
+    </div>
+
+    <div class="table_page " style="overflow-x: auto;height: 800px;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Рейтинг</th>
+                    <th>Категория</th>
+                    <th>Статус</th>
+                    <th>Описание</th>
+                    <th>Характеристики</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <form asp-action="EditProduct" asp-controller="Admin">
+                    <tr id="trId-@prA">
+                        <td>@prI</td>
+                        <td>
+                            <input hidden name="Id" value="@item.Id" />
+                            <input type="text" autocomplete="off" required readonly class="table-input-text" name="Name" value="@item.Name">
+                        </td>
+                        <td><input type="text" autocomplete="off" required readonly class="table-input-text" name="Price" value="@item.Price"></td>
+
+                        <td><input type="number" autocomplete="off" min="1" max="10" required readonly class="table-input-text" name="Rating" value="@item.Rating"></td>
+                        <td>
+                            <select required disabled class="select-f" name="CategoryId" asp-for="Products[prA].CategoryId">
+                                @foreach (var category in Model.ProductCategories)
+                                {
+                                    <option class="" value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select required disabled class="select-f" readonly name="OnSale" asp-for="Products[prA].OnSale">
+
+                                <option class="select-option-f" value="@bool.TrueString">Виден</option>
+                                <option class="select-option-f" value="@bool.FalseString">Скрыт</option>
+
+                            </select>
+                        </td>
+                        <td><input type="text" autocomplete="off" readonly class="table-input-text" name="Description" value="@item.Description"></td>
+                        <td>
+                            <div class="__select">
+                                <div class="__select__content" id="divChec-@prI">
+                                    @for (int a = 0; a < Model.Characteristics.Count; a++)
+                                    {
+                                        @if (item.ProductCharacteristics.Any(c => c == Model.Characteristics[a].Id))
+                                        {
+
+                                            <input disabled id="singleSelect-@prI-@a" class="__select__input" type="checkbox" onchange="checkboxOnch(this)" name="ProductCharacteristics[@prI]" value="@Model.Characteristics[a].Id" checked />
+                                            <label for="singleSelect-@prI-@a" class="__select__label">@Model.Characteristics[a].Name</label>
+
+                                        }
+                                        else
+                                        {
+                                            <input disabled id="singleSelect-@prI-@a" class="__select__input" type="checkbox" onchange="checkboxOnch(this)" name="ProductCharacteristics[@prI]" value="@Model.Characteristics[a].Id" />
+                                            <label for="singleSelect-@prI-@a" class="__select__label">@Model.Characteristics[a].Name</label>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="btn-tb" type="button" name="edit" onclick="Edit(this)" value="Редактировать" />
+                            <input class="btn-tb" name="save" type="submit" onclick="Save(this)" style="display: none" value="Сохранить" />
+                        </td>
+                    </tr>
+                    </form>
+                    prI++;
+                    prA++;
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+<script>
+    let ulActiveAs = document.getElementById("ulActive").getElementsByTagName("a");
+
+    for (var item of ulActiveAs) {
+        if (item.id == 'productsId') {
+            item.classList.add("active");
+        }
+    }
+
+</script>

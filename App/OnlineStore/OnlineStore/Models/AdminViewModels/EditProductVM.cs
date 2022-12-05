@@ -2,21 +2,17 @@
 using OnlineStore.Models.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineStore.Models.AdminViewModels
 {
-    public class AdminVM
+    public class EditProductVM
     {
-        public List<PurchaseHistory> UserPurchaseHistories { get; set; }
-        public RegisterViewModel User { get; set; }
-
+        public List<ProductVM> Products { get; set; }
+        public List<Category> ProductCategories { get; set; }
+        public List<Characteristic> Characteristics { get; set; }
         public decimal GetPrice(int amountProduct, decimal price)
         {
             return price * amountProduct;
         }
-
     }
 }

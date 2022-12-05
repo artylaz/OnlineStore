@@ -16,7 +16,7 @@ namespace OnlineStore.Controllers
         {
             this.db = db;
 
-            
+            IndexMenuVM.Categorys =  db.Categories.Where(c => c.CategoryId == null && c.OnSale == true).Include(c => c.InverseCategoryNavigation).ToList();
 
         }
 
@@ -29,7 +29,7 @@ namespace OnlineStore.Controllers
                 ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             }
 
-            IndexMenuVM.Categorys = await db.Categories.Where(c => c.CategoryId == null && c.OnSale == true).Include(c => c.InverseCategoryNavigation).ToListAsync();
+            
 
             var latestProducts = await db.Products
                 .Skip(Math.Max(0, db.Products.Count() - 10)).Where(p => p.OnSale == true).Include(p => p.Pictures).ToListAsync();

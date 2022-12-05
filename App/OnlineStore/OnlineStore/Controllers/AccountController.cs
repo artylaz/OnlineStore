@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
+using OnlineStore.Models.StaticModels;
 using OnlineStore.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace OnlineStore.Controllers
         public AccountController(OnlineStore_DbContext db)
         {
             this.db = db;
+           
         }
 
         [HttpGet]

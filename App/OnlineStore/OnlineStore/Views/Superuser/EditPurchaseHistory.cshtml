@@ -1,0 +1,123 @@
+﻿@model EditPurchaseHistoryVM
+@{ 
+    int purI = 1;
+    int purA = 0;
+    Layout = "_LayoutAdmin";
+}
+
+<div class="tab-pane fade show active" id="purchaseHistory">
+    <h4>История покупок</h4>
+
+    <div class="table_page">
+        <form asp-action="EditPurchaseHistory" asp-controller="Superuser">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Клиент</th>
+                        <th>Продукт</th>
+                        <th>Количество</th>
+                        <th>Дата покупки</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select required class="select-f" readonly name="UserId">
+                                @foreach (var user in Model.Users)
+                                {
+                                    <option class="select-option-f" value="@user.Id">@user.LastName @user.FirstName</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select required class="select-f" readonly name="ProductId">
+                                @foreach (var products in Model.Products)
+                                {
+                                    <option class="select-option-f" value="@products.Id">@products.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" autocomplete="off" required class="table-input-text" name="AmountProduct">
+                        </td>
+                        <td><input type="date" autocomplete="off" required class="table-input-text" name="DatePurchase"></td>
+                        <td>
+                            <input class="btn-tb" type="submit" value="Добавить" />
+                        </td>
+                    </tr>
+
+            </table>
+        </form>
+    </div>
+
+    <div class="table_page " style="overflow-x: auto;height: 400px;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Клиент</th>
+                    <th>Продукт</th>
+                    <th>Количество</th>
+                    <th>Дата покупки</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PurchaseHistories)
+                {
+                    <form asp-action="EditPurchaseHistory" asp-controller="Superuser">
+                    <tr id="trPurId-@purA">
+                        <td>@purI</td>
+                        <td>
+                            <input hidden name="Id" value="@item.Id" />
+                            <select required disabled class="select-f" readonly name="UserId" asp-for="PurchaseHistories[purA].UserId">
+                                @foreach (var user in Model.Users)
+                                {
+                                    <option class="select-option-f" value="@user.Id">@user.LastName @user.FirstName</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select required disabled class="select-f" readonly name="ProductId" asp-for="PurchaseHistories[purA].ProductId">
+                                @foreach (var products in Model.Products)
+                                {
+                                    <option class="select-option-f" value="@products.Id">@products.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" autocomplete="off" required readonly class="table-input-text" name="AmountProduct" value="@item.AmountProduct">
+                        </td>
+                        <td><input type="date" autocomplete="off" required readonly class="table-input-text" name="DatePurchase" value="@item.DatePurchase.ToString("yyyy-MM-dd")"></td>
+
+                        <td>
+                            <input class="btn-tb" type="button" name="edit" onclick="Edit(this)" value="Редактировать" />
+                            <input class="btn-tb" name="save" type="submit" onclick="Save(this)" style="display: none" value="Сохранить" />
+                        </td>
+                        <td>
+                            <a class="btn-tb" href="@Url.Action("RemovePurchaseHistory", "Superuser", item)">Удалить</a>
+                        </td>
+                    </tr>
+                    </form>
+                    purI++;
+                    purA++;
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+<script>
+    let ulActiveAs = document.getElementById("ulActive").getElementsByTagName("a");
+
+    for (var item of ulActiveAs) {
+        if (item.id == 'purchaseHistoryId') {
+            item.classList.add("active");
+        }
+    }
+
+</script>

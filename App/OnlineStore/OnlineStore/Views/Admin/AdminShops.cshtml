@@ -1,0 +1,44 @@
+﻿@model AdminVM
+@{
+    int i = 1;
+    Layout = "_LayoutAdmin";
+}
+<div class="tab-pane fade show active" id="shops">
+    <h4>Покупки</h4>
+    <div class="table_page table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Дата</th>
+                    <th>Товар</th>
+                    <th>Всего</th>
+                    <th>Показать</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.UserPurchaseHistories)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.DatePurchase.ToString("D")</td>
+                        <td><span class="success">@item.Product.Name</span></td>
+                        <td>@Model.GetPrice(item.AmountProduct, item.Product.Price) ₽ за @item.AmountProduct товар </td>
+                        <td><a href="@Url.Action("ShowProduct","Shopping",item.Product)" class="view">Перейти</a></td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+        let ulActiveAs = document.getElementById("ulActive").getElementsByTagName("a");
+
+        for (var item of ulActiveAs) {
+            if (item.id == 'shopsId') {
+                item.classList.add("active");
+            }
+        }
+
+</script>

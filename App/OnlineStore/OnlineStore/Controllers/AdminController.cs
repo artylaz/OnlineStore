@@ -29,11 +29,50 @@ namespace OnlineStore.Controllers
             int userId = int.Parse(User.Claims.First().Value);
 
             User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            var myAccountVM = new AdminVM
+            {
+                User = new RegisterViewModel
+                {
+                    Email = user.Email,
+                    LastName = user.LastName,
+                    Phone = user.Phone,
+                    FirstName = user.FirstName,
+                    Password = user.Password
+                },
+            };
+
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
+            return View(myAccountVM);
+        }
+        #endregion
+
+        #region AdminShops
+        [Authorize(Roles = "admin,superuser")]
+        public async Task<IActionResult> AdminShops(AdminVM adminVM)
+        {
+            int userId = int.Parse(User.Claims.First().Value);
             List<PurchaseHistory> userPurchaseHistories = await db.PurchaseHistories
                 .Where(p => p.UserId == userId)
                 .Include(p => p.Product)
                 .ToListAsync();
 
+            var myAccountVM = new AdminVM
+            {
+                UserPurchaseHistories = userPurchaseHistories
+            };
+
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
+            return View(myAccountVM);
+        }
+        #endregion
+
+        #region Product
+
+        [Authorize(Roles = "admin,superuser")]
+        [HttpGet]
+        public async Task<IActionResult> EditProduct()
+        {
             List<Product> products = await db.Products.Include(p => p.Category).Include(p => p.ProductCharacteristics).ToListAsync();
             List<ProductVM> productVMs = new();
 
@@ -53,51 +92,18 @@ namespace OnlineStore.Controllers
                         Rating = product.Rating,
                     });
             }
-
-
+            List<Characteristic> characteristics = await db.Characteristics.ToListAsync();
             List<Category> productCategories = await db.Categories.Where(c => c.CategoryId != null && c.OnSale != false).ToListAsync();
 
-            List<Category> categories = await db.Categories.ToListAsync();
-            List<Category> parentCategories = await db.Categories.Where(c => c.CategoryId == null).ToListAsync();
-
-            List<Characteristic> characteristics = await db.Characteristics.ToListAsync();
-            List<Picture> pictures = await db.Pictures.ToListAsync();
-            List<PurchaseHistory> purchaseHistories = await db.PurchaseHistories.ToListAsync();
-            List<User> users = await db.Users.Where(u => u.Id != userId).ToListAsync();
-            List<MonitorDatabase> monitorDatabases = await db.MonitorDatabases.ToListAsync();
-            List<Role> roles = await db.Roles.ToListAsync();
-
-            var myAccountVM = new AdminVM
+            var editProductVM = new EditProductVM
             {
-                UserPurchaseHistories = userPurchaseHistories,
-                User = new RegisterViewModel
-                {
-                    Email = user.Email,
-                    LastName = user.LastName,
-                    Phone = user.Phone,
-                    FirstName = user.FirstName,
-                    Password = user.Password
-                },
                 Products = productVMs,
                 ProductCategories = productCategories,
                 Characteristics = characteristics,
-                Status = adminVM.Status,
-                ParentCategories = parentCategories,
-                Categories = categories,
-                Pictures = pictures,
-                PurchaseHistories = purchaseHistories,
-                Users = users,
-                MonitorDatabases = monitorDatabases,
-                Roles = roles,
             };
-            ViewData["liShow"] = adminVM.Status;
-
-            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
-            return View(myAccountVM);
+            return View(editProductVM);
         }
-        #endregion
 
-        #region Product
         [Authorize(Roles = "admin,superuser")]
         [HttpPost]
         public async Task<IActionResult> EditProduct(ProductVM product)
@@ -135,11 +141,28 @@ namespace OnlineStore.Controllers
             await db.SaveChangesAsync();
 
 
-            return RedirectToAction("AdminAccount", new AdminVM { Status = "Product" });
+            return RedirectToAction("EditProduct");
         }
         #endregion
 
         #region Category
+
+        [Authorize(Roles = "admin,superuser")]
+        [HttpGet]
+        public async Task<IActionResult> EditCategory()
+        {
+            List<Category> categories = await db.Categories.ToListAsync();
+            List<Category> parentCategories = await db.Categories.Where(c => c.CategoryId == null).ToListAsync();
+
+            var editCategoryVM = new EditCategoryVM
+            {
+                ParentCategories = parentCategories,
+                Categories = categories
+            };
+
+            return View(editCategoryVM);
+        }
+
         [Authorize(Roles = "admin,superuser")]
         [HttpPost]
         public async Task<IActionResult> EditCategory(Category category)
@@ -157,11 +180,26 @@ namespace OnlineStore.Controllers
             }
             await db.SaveChangesAsync();
 
-            return RedirectToAction("AdminAccount", new AdminVM { Status = "Category" });
+            return RedirectToAction("EditCategory");
         }
         #endregion
 
         #region Characteristic
+
+        [Authorize(Roles = "admin,superuser")]
+        [HttpGet]
+        public async Task<IActionResult> EditCharacteristic()
+        {
+            List<Characteristic> characteristics = await db.Characteristics.ToListAsync();
+
+            var editCharacteristicVM = new EditCharacteristicVM
+            {
+                Characteristics = characteristics,
+            };
+
+            return View(editCharacteristicVM);
+        }
+
         [Authorize(Roles = "admin,superuser")]
         [HttpPost]
         public async Task<IActionResult> EditCharacteristic(Characteristic characteristic)
@@ -177,7 +215,7 @@ namespace OnlineStore.Controllers
             }
             await db.SaveChangesAsync();
 
-            return RedirectToAction("AdminAccount", new AdminVM { Status = "Characteristic" });
+            return RedirectToAction("EditCharacteristic");
         }
         [Authorize(Roles = "admin,superuser")]
         [HttpGet]
@@ -186,16 +224,53 @@ namespace OnlineStore.Controllers
 
             if (characteristic.Id != 0)
             {
+                var chPrs = db.ProductCharacteristics.Where(pc => pc.CharacteristicId == characteristic.Id);
+                db.RemoveRange(chPrs);
                 db.Remove(characteristic);
                 await db.SaveChangesAsync();
             }
 
 
-            return RedirectToAction("AdminAccount", new AdminVM { Status = "Characteristic" });
+            return RedirectToAction("EditCharacteristic");
         }
         #endregion
 
         #region Picture
+
+        [Authorize(Roles = "admin,superuser")]
+        [HttpGet]
+        public async Task<IActionResult> EditPicture()
+        {
+            List<Product> products = await db.Products.Include(p => p.Category).Include(p => p.ProductCharacteristics).ToListAsync();
+            List<ProductVM> productVMs = new();
+
+            foreach (Product product in products)
+            {
+                productVMs.Add(
+                    new ProductVM
+                    {
+                        Id = product.Id,
+                        ProductCharacteristics = product.ProductCharacteristics.Select(pc => pc.CharacteristicId).ToList(),
+                        Category = product.Category,
+                        CategoryId = product.CategoryId,
+                        Description = product.Description,
+                        Name = product.Name,
+                        OnSale = product.OnSale,
+                        Price = product.Price,
+                        Rating = product.Rating,
+                    });
+            }
+            List<Picture> pictures = await db.Pictures.ToListAsync();
+
+            var editPictureVM = new EditPictureVM
+            {
+                Products = productVMs,
+                Pictures = pictures,
+            };
+
+            return View(editPictureVM);
+        }
+
         [Authorize(Roles = "admin,superuser")]
         [HttpPost]
         public async Task<IActionResult> EditPicture(Picture picture)
@@ -211,7 +286,7 @@ namespace OnlineStore.Controllers
             }
             await db.SaveChangesAsync();
 
-            return RedirectToAction("AdminAccount", new AdminVM { Status = "Picture" });
+            return RedirectToAction("EditPicture");
         }
         [Authorize(Roles = "admin,superuser")]
         [HttpGet]
@@ -225,106 +300,9 @@ namespace OnlineStore.Controllers
             }
 
 
-            return RedirectToAction("AdminAccount", new AdminVM { Status = "Picture" });
+            return RedirectToAction("EditPicture");
         }
         #endregion
 
-        #region superuser
-
-        #region PurchaseHistory
-        [Authorize(Roles = "superuser")]
-        [HttpPost]
-        public async Task<IActionResult> EditPurchaseHistory(PurchaseHistory purchaseHistory)
-        {
-
-            if (purchaseHistory.Id != 0)
-            {
-                db.Entry(purchaseHistory).State = EntityState.Modified;
-            }
-            else
-            {
-                await db.PurchaseHistories.AddAsync(purchaseHistory);
-            }
-            await db.SaveChangesAsync();
-
-            return RedirectToAction("AdminAccount", new AdminVM { Status = "PurchaseHistory" });
-        }
-        [Authorize(Roles = "superuser")]
-        [HttpGet]
-        public async Task<IActionResult> RemovePurchaseHistory(PurchaseHistory purchaseHistory)
-        {
-
-            if (purchaseHistory.Id != 0)
-            {
-                db.Remove(purchaseHistory);
-                await db.SaveChangesAsync();
-            }
-
-
-            return RedirectToAction("AdminAccount", new AdminVM { Status = "PurchaseHistory" });
-        }
-        #endregion
-
-        #region User
-        [Authorize(Roles = "superuser")]
-        [HttpPost]
-        public async Task<IActionResult> EditUser(User user)
-        {
-
-            if (user.Id != 0)
-            {
-                db.Entry(user).State = EntityState.Modified;
-            }
-            else
-            {
-                await db.Users.AddAsync(user);
-            }
-            await db.SaveChangesAsync();
-
-            return RedirectToAction("AdminAccount", new AdminVM { Status = "User" });
-        }
-        #endregion
-
-        #region Role
-        //[Authorize(Roles = "superuser")]
-        //[HttpPost]
-        //public async Task<IActionResult> EditUser(Role role)
-        //{
-
-        //    if (role.Id != 0)
-        //    {
-        //        db.Entry(role).State = EntityState.Modified;
-        //    }
-        //    else
-        //    {
-        //        await db.Roles.AddAsync(role);
-        //    }
-        //    await db.SaveChangesAsync();
-
-        //    return RedirectToAction("AdminAccount", new AdminVM { Status = "PurchaseHistory" });
-        //}
-        //[Authorize(Roles = "superuser")]
-        //[HttpGet]
-        //public async Task<IActionResult> RemovePurchaseHistory(Role role)
-        //{
-
-        //    if (role.Id != 0)
-        //    {
-        //        var users = db.Users.Where(u => u.RoleId == role.Id);
-        //        if (users != null)
-        //        {
-        //            db.Users.RemoveRange(users);
-        //            db.Remove(role);
-        //            await db.SaveChangesAsync();
-        //        }
-        //    }
-
-
-        //    return RedirectToAction("AdminAccount", new AdminVM { Status = "Role" });
-        //}
-        #endregion
-
-
-        #endregion
     }
 }

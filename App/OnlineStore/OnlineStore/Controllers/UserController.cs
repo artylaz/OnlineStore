@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
+using OnlineStore.Models.StaticModels;
 using OnlineStore.Models.UserViewModels;
 using OnlineStore.Models.ViewModels;
 using System;

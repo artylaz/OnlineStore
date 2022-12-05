@@ -8,6 +8,7 @@ using OnlineStore.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using OnlineStore.Models.SortPhilPag;
 using System.Threading.Tasks;
+using OnlineStore.Models.StaticModels;
 
 namespace OnlineStore.Controllers
 {

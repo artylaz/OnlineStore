@@ -1,0 +1,83 @@
+﻿@model List<MonitorDatabase>
+@{ 
+    int moI = 1;
+    int moA = 0;
+    Layout = "_LayoutAdmin";
+}
+
+<div class="tab-pane fade show active" id="monitorDatabase">
+    <h4>Изменение базы</h4>
+
+    <div class="table_page " style="overflow-x: auto;height: 400px;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Имя хоста</th>
+                    <th>Имя пользователя</th>
+                    <th>Операция</th>
+                    <th>Таблица</th>
+                    <th>Колонка</th>
+                    <th>Id записи</th>
+                    <th>Старое значение</th>
+                    <th>Новое значение</th>
+                    <th>Дата</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <form asp-action="EditUser" asp-controller="Admin">
+                    <tr id="trMoId-@moA">
+                        <td>@moI</td>
+
+                        <td>
+                            <input type="text" readonly autocomplete="off" class="table-input-text" name="Hostname" value="@item.Hostname">
+                        </td>
+                        <td>
+                            <input type="text"readonly autocomplete="off" class="table-input-text" name="NtUsername" value="@item.NtUsername">
+                        </td>
+                        <td>
+                            <input type="text"readonly autocomplete="off" class="table-input-text" name="NameOperation" value="@item.NameOperation">
+                        </td>
+                        <td>
+                            <input type="text"readonly autocomplete="off" class="table-input-text" name="NameTable" value="@item.NameTable">
+                        </td>
+                        <td>
+                            <input type="text"readonly autocomplete="off" class="table-input-text" name="NameColumns" value="@item.NameColumns">
+                        </td>
+                        <td>
+                            <input type="text"readonly autocomplete="off" class="table-input-text" name="IdRecord" value="@item.IdRecord">
+                        </td>
+                        <td>
+                            <input type="text"readonly autocomplete="off" class="table-input-text" name="OldRecord" value="@item.OldRecord">
+                        </td>
+                        <td>
+                            <input type="text"readonly autocomplete="off" class="table-input-text" name="NewRecord" value="@item.NewRecord">
+                        </td>
+                        <td>
+                            <input type="text"readonly autocomplete="off" class="table-input-text" name="NewRecord" value="@item.DataModificationRecord">
+                        </td>
+                    </tr>
+                    </form>
+                    moI++;
+                    moA++;
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+<script>
+        let ulActiveAs = document.getElementById("ulActive").getElementsByTagName("a");
+
+        for (var item of ulActiveAs) {
+            if (item.id == 'monitorDatabaseId') {
+                item.classList.add("active");
+            }
+        }
+
+</script>
