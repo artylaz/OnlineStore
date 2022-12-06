@@ -1,0 +1,127 @@
+﻿@model AnalyticsVM
+@{
+    Layout = "_LayoutAdmin";
+    int anA = 0;
+    int anI = 1;
+}
+
+<div class="tab-pane fade mx-auto col-md-10 show active" id="analytics">
+    <h4>Аналитика</h4>
+
+    <div class="table_page">
+        <form method="get" asp-action="Analytics" asp-controller="Superuser">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Начальная дата</th>
+                        <th>Конечная дата</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="date" autocomplete="off" required class="table-input-text" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")">
+                        </td>
+                        <td>
+                            <input type="date" autocomplete="off" required class="table-input-text" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")">
+                        </td>
+                        <td><input class="btn-tb" type="submit" value="Показать" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <h4>@ViewData["Ex"]</h4>
+    </div>
+    @if (Model.ShowIs == true && Model.PurchaseHistories.Count > 0)
+    {
+        <div class="table_page" style="overflow-x: auto;height: 400px;">
+            <form method="get" id="formChartId" asp-action="Report" asp-controller="Superuser">
+                <input type="date" hidden name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+                <input type="date" hidden name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")"/>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Клиент</th>
+                            <th>Продукт</th>
+                            <th>Количество</th>
+                            <th>Дата покупки</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PurchaseHistories)
+                        {
+
+                            <tr id="trPurId-@anA">
+                                <td>@anI</td>
+                                <td>
+                                    <input type="text" autocomplete="off" required readonly disabled class="table-input-text" value="@item.User.LastName @item.User.FirstName">
+                                </td>
+                                <td>
+                                    
+                                    <input type="text" autocomplete="off" required readonly disabled class="table-input-text" name="PurchaseHistories[@anA].Product.Name" value="@item.Product.Name">
+                                </td>
+                                <td>
+                                    <input type="text" autocomplete="off" required readonly disabled class="table-input-text" name="PurchaseHistories[@anA].AmountProduct" value="@item.AmountProduct">
+                                </td>
+                                <td><input type="date" autocomplete="off" required readonly disabled class="table-input-text" name="PurchaseHistories[@anA].DatePurchase" value="@item.DatePurchase.ToString("yyyy-MM-dd")"></td>
+
+                            </tr>
+
+                            anI++;
+                            anA++;
+                        }
+                    </tbody>
+                </table>
+
+            </form>
+        </div>
+        <div class="table_page ">
+            <table>
+                <thead>
+                    <tr>
+                        <th><input class="btn-tb" id="LinkChartId" type="submit" value="Отчёт" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="table_page ">
+
+            <canvas id="myChart"></canvas>
+            <canvas id="myChart2"></canvas>
+            @for (int i = 0; i < Model.CharVM.Dates.Count; i++)
+            {
+                <input name="charDates" hidden value="@Model.CharVM.Dates[i]" />
+                <input name="charPrices" hidden value="@Model.CharVM.Prices[i]" />
+                <input name="charAmounts" hidden value="@Model.CharVM.Amounts[i]" />
+            }
+
+        </div>
+    }
+    else if (Model?.PurchaseHistories?.Count == 0 && Model.PurchaseHistories != null)
+    {
+        <div class="table_page ">
+            <h4>Нет данных за эти месяцы</h4>
+        </div>
+
+    }
+</div>
+<script>
+
+    document.getElementById("LinkChartId").onclick = function () {
+        document.getElementById("formChartId").submit();
+    }
+
+
+    let ulActiveAs = document.getElementById("ulActive").getElementsByTagName("a");
+
+    for (var item of ulActiveAs) {
+        if (item.id == 'analyticsId') {
+            item.classList.add("active");
+        }
+    }
+
+</script>

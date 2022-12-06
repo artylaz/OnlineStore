@@ -5,7 +5,7 @@
     Layout = "_LayoutAdmin";
 }
 
-<div class="tab-pane fade show active" id="characteristic">
+<div class="tab-pane fade show active mx-auto col-md-10" id="characteristic">
     <h4>Характеристики</h4>
 
     <div class="table_page">
@@ -14,7 +14,7 @@
                 <thead>
                     <tr>
                         <th>Название</th>
-                        <th>Значение</th>
+                        <th>Описание</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -56,7 +56,7 @@
                             <input hidden name="Id" value="@item.Id" />
                             <input type="text" autocomplete="off" required readonly class="table-input-text" name="Name" value="@item.Name">
                         </td>
-                        <td><input type="text" autocomplete="off" readonly class="table-input-text" name="Value" value="@item.Value"></td>
+                        <td><input type="text" autocomplete="off" required readonly class="table-input-text" name="Value" value="@item.Value"></td>
                         <td>
                             <input class="btn-tb" type="button" name="edit" onclick="Edit(this)" value="Редактировать" />
                             <input class="btn-tb" name="save" type="submit" onclick="Save(this)" style="display: none" value="Сохранить" />

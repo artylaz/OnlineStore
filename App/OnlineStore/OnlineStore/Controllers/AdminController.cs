@@ -16,18 +16,17 @@ namespace OnlineStore.Controllers
     public class AdminController : Controller
     {
         private readonly OnlineStore_DbContext db;
-
+        private readonly int userId;
         public AdminController(OnlineStore_DbContext db)
         {
             this.db = db;
+            userId = int.Parse(User.Claims.First().Value);
         }
 
         #region AdminAccount
         [Authorize(Roles = "admin,superuser")]
         public async Task<IActionResult> AdminAccount(AdminVM adminVM)
         {
-            int userId = int.Parse(User.Claims.First().Value);
-
             User user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             var myAccountVM = new AdminVM
@@ -51,7 +50,6 @@ namespace OnlineStore.Controllers
         [Authorize(Roles = "admin,superuser")]
         public async Task<IActionResult> AdminShops(AdminVM adminVM)
         {
-            int userId = int.Parse(User.Claims.First().Value);
             List<PurchaseHistory> userPurchaseHistories = await db.PurchaseHistories
                 .Where(p => p.UserId == userId)
                 .Include(p => p.Product)
@@ -101,6 +99,7 @@ namespace OnlineStore.Controllers
                 ProductCategories = productCategories,
                 Characteristics = characteristics,
             };
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return View(editProductVM);
         }
 
@@ -124,10 +123,11 @@ namespace OnlineStore.Controllers
             pr.Price = product.Price;
             pr.Rating = product.Rating;
 
-            foreach (var item in product.ProductCharacteristics)
-            {
-                pr.ProductCharacteristics.Add(new ProductCharacteristic { CharacteristicId = item, ProductId = product.Id });
-            }
+            if (product.ProductCharacteristics != null)
+                foreach (var item in product.ProductCharacteristics)
+                {
+                    pr.ProductCharacteristics.Add(new ProductCharacteristic { CharacteristicId = item, ProductId = product.Id });
+                }
 
 
             if (pr.Id != 0)
@@ -140,7 +140,7 @@ namespace OnlineStore.Controllers
             }
             await db.SaveChangesAsync();
 
-
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return RedirectToAction("EditProduct");
         }
         #endregion
@@ -179,7 +179,7 @@ namespace OnlineStore.Controllers
                 await db.Categories.AddAsync(category);
             }
             await db.SaveChangesAsync();
-
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return RedirectToAction("EditCategory");
         }
         #endregion
@@ -196,7 +196,7 @@ namespace OnlineStore.Controllers
             {
                 Characteristics = characteristics,
             };
-
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return View(editCharacteristicVM);
         }
 
@@ -214,7 +214,7 @@ namespace OnlineStore.Controllers
                 await db.Characteristics.AddAsync(characteristic);
             }
             await db.SaveChangesAsync();
-
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return RedirectToAction("EditCharacteristic");
         }
         [Authorize(Roles = "admin,superuser")]
@@ -230,7 +230,7 @@ namespace OnlineStore.Controllers
                 await db.SaveChangesAsync();
             }
 
-
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return RedirectToAction("EditCharacteristic");
         }
         #endregion
@@ -267,7 +267,7 @@ namespace OnlineStore.Controllers
                 Products = productVMs,
                 Pictures = pictures,
             };
-
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return View(editPictureVM);
         }
 
@@ -285,7 +285,7 @@ namespace OnlineStore.Controllers
                 await db.Pictures.AddAsync(picture);
             }
             await db.SaveChangesAsync();
-
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return RedirectToAction("EditPicture");
         }
         [Authorize(Roles = "admin,superuser")]
@@ -299,7 +299,7 @@ namespace OnlineStore.Controllers
                 await db.SaveChangesAsync();
             }
 
-
+            ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return RedirectToAction("EditPicture");
         }
         #endregion

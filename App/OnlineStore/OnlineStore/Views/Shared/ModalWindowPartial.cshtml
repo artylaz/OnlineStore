@@ -25,18 +25,58 @@
             </div>
 
             <ul class="mobile-action-icon">
-                <li class="mobile-action-icon-item">
-                    <a href="cart.html" class="mobile-action-icon-link">
-                        <i class="icon-shopping-cart"></i>
-                        <span class="mobile-action-icon-item-count">3</span>
-                    </a>
-                </li>
-                <li class="mobile-action-icon-item">
-                    <a href="#" class="mobile-action-icon-link">
-                        <i class="icon-user"></i>
-                    </a>
-                </li>
+
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li class="mobile-action-icon-item">
+                        <a href="/Account/Login" class="mobile-action-icon-link">
+                            <i class="icon-user"></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="mobile-action-icon-item">
+                        <a href="/Shopping/ShowBasket" class="mobile-action-icon-link">
+                            <i class="icon-shopping-cart"></i>
+                            <span class="header-action-icon-item-count">@ViewData["AmountBasket"]</span>
+                        </a>
+                    </li>
+                    <li class="mobile-action-icon-item">
+                        @if (User.IsInRole("user"))
+                        {
+                            <a href="/User/MyAccount" class="mobile-action-icon-link" style="box-sizing: content-box; ">
+                                @User.Claims.Last().Value
+                            </a>
+                        }
+                        else if (User.IsInRole("admin"))
+                        {
+                            <a href="/Admin/AdminAccount" class="mobile-action-icon-link" style="box-sizing: content-box; ">
+                                @User.Claims.Last().Value
+                            </a>
+                        }
+                        else if (User.IsInRole("superuser"))
+                        {
+                            <a href="/Admin/AdminAccount" class="mobile-action-icon-link" style="box-sizing: content-box; ">
+                                @User.Claims.Last().Value
+                            </a>
+                        }
+                        else { }
+
+
+                    </li>
+                    <li class="mobile-action-icon-item">
+                        <a href="#" id="yourLinkId" class="mobile-action-icon-link">
+                            <i class="icon-arrow-right-circle"></i>
+                        </a>
+                    </li>
+                }
             </ul>
+            <script>
+                document.getElementById("yourLinkId").onclick = function () {
+                    document.getElementById("yourFormId").submit();
+                }
+            </script>
         </div>
 
         <div class="mobile-menu-bottom">
@@ -49,19 +89,27 @@
                         <ul class="mobile-sub-menu">
                             @foreach (var categoryVM in IndexMenuVM.Categorys)
                             {
-                                <li>
-                                    <a href="#">@categoryVM.Name</a>
-                                    <ul class="mobile-sub-menu">
-                                        @foreach (var item in categoryVM.InverseCategoryNavigation)
-                                        {
-                                            <li><a href="cart.html">@item.Name</a></li>
-                                        }
-                                    </ul>
-                                </li>
+                                @if (categoryVM.OnSale == true)
+                                {
+                                    <li class="mega-menu-item">
+                                        <a href="@Url.Action("ShowProducts","Shopping",categoryVM)" class="mega-menu-item-title">@categoryVM.Name</a>
+                                        <ul class="mega-menu-sub">
+                                            @foreach (var item in categoryVM.InverseCategoryNavigation)
+                                            {
+                                                @if (item.OnSale == true)
+                                                {
+                                                    <li>
+                                                        <a href="@Url.Action("ShowProducts","Shopping",item)">@item.Name</a>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </li>
+                                }
                             }
                         </ul>
                     </li>
-                    <li><a href="#">Контакты</a></li>
+                    <li><a href="/Home/Сontacts">Контакты</a></li>
                 </ul>
             </div>
         </div>

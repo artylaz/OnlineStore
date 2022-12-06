@@ -379,10 +379,7 @@ input {
   overflow: visible;
 }
 
-button,
-select {
-  text-transform: none;
-}
+
 
 [role=button] {
   cursor: pointer;
@@ -5669,7 +5666,6 @@ progress {
   text-align: start;
   text-decoration: none;
   text-shadow: none;
-  text-transform: none;
   letter-spacing: normal;
   word-break: normal;
   word-spacing: normal;
@@ -5771,7 +5767,6 @@ progress {
   text-align: start;
   text-decoration: none;
   text-shadow: none;
-  text-transform: none;
   letter-spacing: normal;
   word-break: normal;
   word-spacing: normal;
@@ -14529,7 +14524,7 @@ Components - Form
 .checkbox-default > span {
   display: inline-block;
   transform: translateX(35px);
-  text-transform: capitalize;
+  text-transform: none;
   color: #666 !important;
   font-size: 14px;
   cursor: pointer;
@@ -14651,7 +14646,7 @@ Components - Sidebar Widget
 }
 
 .sidebar-title {
-  text-transform: capitalize;
+  text-transform: none;
   margin-bottom: 30px;
   font-weight: 600;
 }
@@ -14839,7 +14834,7 @@ table {
   border-right: 1px solid #eee;
   font-size: 16px;
   font-weight: 600;
-  text-transform: capitalize;
+  text-transform: none;
   padding: 10px;
   text-align: center;
 }
@@ -14854,7 +14849,7 @@ table {
 .table-responsive table tbody tr td {
   border-right: 1px solid #eee;
   font-weight: 500;
-  text-transform: capitalize;
+  text-transform: none;
   font-size: 14px;
   text-align: center;
   min-width: 150px;
@@ -15448,7 +15443,7 @@ Pages - Cart
   line-height: 30px;
   font-weight: 500;
   display: inline-block;
-  text-transform: capitalize;
+  text-transform: none;
   margin-bottom: 0;
   color: #FFF;
 }
@@ -15622,7 +15617,7 @@ Pages - Checkout
   font-size: 16px;
   line-height: 30px;
   padding: 5px 10px;
-  text-transform: capitalize;
+  text-transform: none;
   color: #FFF;
   background: #ea1c26;
   font-weight: 500;
@@ -15652,7 +15647,7 @@ Pages - My Account
   font-size: 14px;
   color: #ffffff;
   font-weight: 500;
-  text-transform: capitalize;
+  text-transform: none;
   background: #333;
   border-radius: 3px;
 }
@@ -15662,13 +15657,13 @@ Pages - My Account
 
 .dashboard_content h4, .dashboard_content .h4 {
   font-size: 22px;
-  text-transform: capitalize;
+  text-transform: none;
   font-weight: 600;
   margin-bottom: 15px;
 }
 .dashboard_content h5, .dashboard_content .h5 {
   font-size: 20px;
-  text-transform: capitalize;
+  text-transform: none;
   font-weight: 500;
   margin-bottom: 10px;
   margin-top: 10px;
@@ -15786,7 +15781,7 @@ Pages - Log In
 }
 .account_form h3, .account_form .h3 {
   font-size: 28px;
-  text-transform: capitalize;
+  text-transform: none;
   font-weight: 500;
   line-height: 22px;
   margin-bottom: 30px;
@@ -15828,7 +15823,7 @@ Pages - Product Details
   border-bottom: 1px solid #eee;
 }
 .product-details-text .title {
-  text-transform: capitalize;
+  text-transform: none;
   line-height: 20px;
   font-size: 22px;
   font-weight: 600;
@@ -15900,7 +15895,7 @@ Pages - Product Details
   line-height: 24px;
   padding: 0 6px;
   border-radius: 3px;
-  text-transform: capitalize;
+  text-transform: none;
   display: inline-block;
 }
 .product-details-social ul li a:hover {
@@ -16049,7 +16044,7 @@ Pages - Product Details
 
 .product-details-variable .title {
   font-weight: 600;
-  text-transform: capitalize;
+  text-transform: none;
   font-size: 18px;
   margin-bottom: 25px;
 }
@@ -16061,7 +16056,7 @@ Pages - Product Details
   display: block;
   margin-bottom: 5px;
   font-weight: 500;
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 .product-add-to-cart-btn a {
@@ -16071,7 +16066,7 @@ Pages - Product Details
   background: #ea1c26;
   height: 42px;
   line-height: 42px;
-  text-transform: capitalize;
+  text-transform: none;
   min-width: 200px;
   text-align: center;
   color: #FFF;
@@ -16100,7 +16095,7 @@ Pages - Product Details
     background: #ea1c26;
     height: 42px;
     line-height: 42px;
-    text-transform: capitalize;
+    text-transform: none;
     min-width: 200px;
     text-align: center;
     color: #FFF;
@@ -16206,7 +16201,7 @@ Pages - Product Details
 .product-variable-group table tbody tr td {
   border-right: 1px solid #e1e1e1;
   font-weight: 500;
-  text-transform: capitalize;
+  text-transform: none;
   font-size: 14px;
   text-align: center;
   min-width: 140px;
@@ -16263,7 +16258,7 @@ Pages - Product Details
   border: none;
   background: #333;
   color: #ffffff;
-  text-transform: capitalize;
+  text-transform: none;
   font-weight: 500;
   padding: 10px 20px;
   display: block;
@@ -16809,7 +16804,7 @@ Pages - Compare
   line-height: 15px;
   margin-bottom: 7px;
   margin-top: 15px;
-  text-transform: capitalize;
+  text-transform: none;
 }
 .compare-table .table tbody tr td.product-image-title .title {
   float: left;
@@ -17049,7 +17044,7 @@ Layout - Header
   padding: 15px 30px;
   font-size: 16px;
   line-height: 30px;
-  text-transform: capitalize;
+  text-transform: none;
   font-weight: 500;
   color: #FFF;
 }
@@ -17063,7 +17058,7 @@ Layout - Header
   font-weight: 400;
   display: block;
   line-height: 35px;
-  text-transform: capitalize;
+  text-transform: none;
   color: #666;
   position: relative;
   transition: all 0.3s ease 0s;
@@ -17660,7 +17655,7 @@ Layout - Offcanvas
   padding: 10px 30px;
   text-align: center;
   font-weight: 600;
-  text-transform: capitalize;
+  text-transform: none;
 }
 .offcanvas-wishlist-action-button-link:hover {
   background: #ea1c26;
@@ -17926,7 +17921,7 @@ Layout - Footer
   font-size: 16px;
   line-height: 24px;
   margin-bottom: 30px;
-  text-transform: capitalize;
+  text-transform: none;
   font-weight: 600;
 }
 
@@ -17978,7 +17973,7 @@ Layout - Footer
 }
 
 .copyright-area {
-  text-transform: capitalize;
+  text-transform: none;
   font-size: 14px;
   text-align: center;
 }

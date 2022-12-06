@@ -1,0 +1,75 @@
+﻿@model ReportVM
+@{
+    Layout = null;
+    int i = 1;
+    int a = 0;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/myStyle.css">
+</head>
+<body>
+    <div class="account_dashboard mt-10">
+        <div class="container" style="max-width: 1800px;">
+            <div class="row">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <a id="back" class="btn btn-dark mt-2 ms-2" href="@Url.Action("Analytics","Superuser",Model)"> Назад</a>
+                </div>
+                <div class="mx-auto col-md-8">
+                    <div class="position-absolute top-0 end-0">@DateTime.Now.ToString("D")</div>
+                    <h3 class="mt-10">Отчёт по продажам</h3>
+                    <h4 class="mt-10">За период с @Model.StartDate.ToString("D") по @Model.EndDate.ToString("D")</h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Клиент</th>
+                                <th>Продукт</th>
+                                <th>Цена</th>
+                                <th>Количество</th>
+                                <th>Дата покупки</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.PurchaseHistories)
+                            {
+                                <tr id="trPurId-@a">
+                                    <td>@i</td>
+                                    <td>
+                                        <input hidden name="Id" value="@item.Id" />
+                                        <input type="text" autocomplete="off" required readonly class="table-input-text" name="AmountProduct" value="@item.User.LastName @item.User.FirstName">
+                                    </td>
+                                    <td>
+                                        <input type="text" hidden name="Id" value="@item.Product.Price" />
+                                        <input type="text" autocomplete="off" required readonly class="table-input-text" name="Product.Name" value="@item.Product.Name">
+                                    </td>
+                                    <td>
+                                        <input type="text" autocomplete="off" required readonly class="table-input-text" name="Product.Price" value="@item.Product.Price">
+                                    </td>
+                                    <td>
+                                        <input type="text" autocomplete="off" required readonly class="table-input-text" name="AmountProduct" value="@item.AmountProduct">
+                                    </td>
+                                    <td><input type="date" autocomplete="off" required readonly class="table-input-text" name="DatePurchase" value="@item.DatePurchase.ToString("yyyy-MM-dd")"></td>
+
+                                </tr>
+                                a++;
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("back").style.display = "none";
+        window.print();
+        setTimeout(() => { document.getElementById("back").style.display = "block" }, 2000);
+    </script>
+</body>
+</html>

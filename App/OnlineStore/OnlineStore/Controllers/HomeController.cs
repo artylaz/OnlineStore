@@ -36,5 +36,11 @@ namespace OnlineStore.Controllers
 
             return View(new IndexVM { Products = latestProducts });
         }
+
+        [HttpGet]
+        public IActionResult Сontacts()
+        {
+            return View();
+        }
     }
 }
