@@ -16,11 +16,11 @@ namespace OnlineStore.Controllers
     public class SuperuserController : Controller
     {
         private readonly OnlineStore_DbContext db;
-        private readonly int userId;
+        //private readonly int userId;
         public SuperuserController(OnlineStore_DbContext db)
         {
             this.db = db;
-            userId = int.Parse(User.Claims.First().Value);
+            //userId = int.Parse(User.Claims.First().Value);
         }
         #region PurchaseHistory
 
@@ -77,6 +77,7 @@ namespace OnlineStore.Controllers
                 await db.PurchaseHistories.AddAsync(purchaseHistory);
             }
             await db.SaveChangesAsync();
+            int userId = int.Parse(User.Claims.First().Value);
             ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return RedirectToAction("EditPurchaseHistory");
         }
@@ -90,7 +91,7 @@ namespace OnlineStore.Controllers
                 db.Remove(purchaseHistory);
                 await db.SaveChangesAsync();
             }
-
+            int userId = int.Parse(User.Claims.First().Value);
             ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return RedirectToAction("EditPurchaseHistory");
         }
@@ -129,6 +130,7 @@ namespace OnlineStore.Controllers
                 await db.Users.AddAsync(user);
             }
             await db.SaveChangesAsync();
+            int userId = int.Parse(User.Claims.First().Value);
             ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return RedirectToAction("EditUser");
         }
@@ -179,6 +181,7 @@ namespace OnlineStore.Controllers
         public async Task<IActionResult> ShowMonitorDatabase()
         {
             List<MonitorDatabase> monitorDatabase = await db.MonitorDatabases.ToListAsync();
+            int userId = int.Parse(User.Claims.First().Value);
             ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return View(monitorDatabase);
         }
@@ -244,6 +247,7 @@ namespace OnlineStore.Controllers
                 ShowIs = true,
                 CharVM = charVM
             };
+            int userId = int.Parse(User.Claims.First().Value);
             ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return View(analyticsVM);
         }
@@ -265,6 +269,7 @@ namespace OnlineStore.Controllers
                 .Include(p => p.User).Include(p => p.Product).OrderBy(p => p.DatePurchase).ToListAsync();
 
             reportVM.PurchaseHistories = purchaseHistories;
+            int userId = int.Parse(User.Claims.First().Value);
             ViewData["AmountBasket"] = await db.Baskets.Where(b => b.UserId == userId).CountAsync();
             return View(reportVM);
         }
